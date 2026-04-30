@@ -1,1587 +1,360 @@
 <!DOCTYPE html>
 <html lang="ru">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Никита Тесленко · Helicopter View</title>
-<meta name="description" content="Никита Тесленко — руководитель продукта и запусков: 15 лет, четыре страны, retail, operations, HealthTech и advisory.">
-<meta name="theme-color" content="#f5f1e8">
-<link rel="preload" as="image" href="2-hero.jpg">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500&family=Roboto+Condensed:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --paper: #f5f1e8;
-    --paper-deep: #ebe5d4;
-    --paper-warm: #faf6ec;
-    --ink: #15110d;
-    --ink-soft: #3a342a;
-    --ink-mute: #847d6e;
-    --rule: #c9c0a8;
-    --rule-strong: #1a1611;
-    --economist-red: #e3120b;
-    --economist-red-deep: #b80e08;
-    --corp: #1a3a52;
-    --entr: #e3120b;
-  }
-
-  * { margin: 0; padding: 0; boxD smooth; }
-
-  body {
-    background: var(--paper);
-    color: var(--ink);
-    font-family: 'EB Garamond', Georgia, serif;
-    font-size: 17px;
-    line-height: 1.45;
-    overflow-x: hidden;
-    -webkit-font-smoothing: antialiased;
-    font-feature-settings: "onum" 1, "kern" 1, "liga" 1;
-  }
-
-  img {
-    display: block;
-    max-width: 100%;
-    height: auto;
-  }
-
-  @keyframes pageRise {
-    from { opacity: 0; transform: translateY(14px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .reveal {
-    animation: pageRise 0.65s cubic-bezier(0.22, 0.61, 0.36, 1) both;
-  }
-
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0.08 0 0 0 0 0.07 0 0 0 0 0.05 0 0 0 0.10 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-    opacity: 0.7;
-    pointer-events: none;
-    z-index: 1;
-    mix-blend-mode: multiply;
-  }
-
-  .serif { font-family: 'EB Garamond', Georgia, serif; }
-  .cond { font-family: 'Roboto Condensed', sans-serif; }
-  .mono { font-family: 'IBM Plex Mono', monospace; }
-
-  /* Container */
-  .container { max-width: 1280px; margin: 0 auto; padding: 0 40px; position: relative; z-index: 2; }
-
-  /* === MASTHEAD === */
-  .masthead {
-    border-bottom: 3px double var(--ink);
-    padding: 16px 0 14px;
-    background: var(--paper);
-    position: sticky;
-    top: 0;
-    z-index: 50;
-    backdrop-filter: blur(4px);
-  }
-  .masthead-inner {
-    max-width: 1280px;
-    margin: 0 auto;
-    padding: 0 40px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 32px;
-  }
-  .nameplate {
-    background: var(--economist-red);
-    color: var(--paper-warm);
-    padding: 8px 14px 9px;
-    font-family: 'Roboto Condensed', sans-serif;
-    font-weight: 700;
-    font-size: 0.95rem;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    line-height: 1;
-    white-space: nowrap;
-  }
-  .nameplate em { font-style: italic; font-weight: 500; opacity: 0.92; }
-
-  .masthead-meta {
-    flex: 1;
-    text-align: center;
-    font-family: 'Roboto Condensed', sans-serif;
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    color: var(--ink-soft);
-  }
-  .masthead-meta .sep { color: var(--rule); margin: 0 10px; }
-
-  .masthead-nav {
-    display: flex;
-    gap: 22px;
-    list-style: none;
-    font-family: 'Roboto Condensed', sans-serif;
-    font-size: 0.78rem;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-  }
-  .masthead-nav a {
-    color: var(--ink);
-    text-decoration: none;
-    border-bottom: 2px solid transparent;
-    padding-bottom: 2px;
-    transition: border-color 0.2s, color 0.2s;
-  }
-  .masthead-nav a:hover { border-bottom-color: var(--economist-red); color: var(--economist-red); }
-
-  /* === HERO / FRONT PAGE === */
-  .frontpage {
-    padding: 36px 0 48px;
-    border-bottom: 1px solid var(--rule);
-  }
-  .frontpage-grid {
-    display: grid;
-    grid-template-columns: minmax(340px, 0.78fr) minmax(520px, 1.22fr);
-    gap: 34px;
-    align-items: stretch;
-  }
-
-  .frontpage-visual {
-    border-top: 3px double var(--ink);
-    border-bottom: 1px solid var(--rule);
-    padding: 12px 0 0;
-    min-width: 0;
-    display: flex;
-    flex-direction: column;
-  }
-  .frontpage-visual img {
-    width: 100%;
-    flex: 1;
-    min-height: 0;
-    aspect-ratio: auto;
-    object-fit: cover;
-    object-position: 52% 42%;
-    filter: saturate(0.9) contrast(1.05);
-  }
-  .frontpage-visual figcaption,
-  .remote-photo figcaption,
-  .portrait-card figcaption {
-    font-family: 'Roboto Condensed', sans-serif;
-    font-size: 0.68rem;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--ink-mute);
-    padding: 9px 0 0;
-    line-height: 1.35;
-  }
-  .frontpage-visual figcaption span,
-  .remote-photo figcaption span,
-  .portrait-card figcaption span {
-    color: var(--economist-red);
-    font-weight: 700;
-    margin-right: 8px;
-  }
-
-  .frontpage-copy {
-    border-top: 1px solid var(--ink);
-    padding-top: 18px;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .frontpage-editorial {
-    display: grid;
-    grid-template-columns: minmax(280px, 1fr) minmax(230px, 0.72fr);
-    gap: 28px;
-    align-items: start;
-    margin-top: 2px;
-    padding-top: 24px;
-    border-top: 1px solid var(--rule);
-  }
-
-  .frontpage-briefing {
-    display: grid;
-    gap: 22px;
-  }
-
-  .hero-actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin: 16px 0 22px;
-  }
-
-  .hero-action {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    min-height: 40px;
-    padding: 10px 16px;
-    background: var(--ink);
-    color: var(--paper-warm);
-    text-decoration: none;
-    font-family: 'Roboto Condensed', sans-serif;
-    font-size: 0.78rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    transition: background 0.2s, color 0.2s;
-  }
-  .hero-action.secondary {
-    background: transparent;
-    color: var(--ink);
-    box-shadow: inset 0 0 0 1px var(--ink);
-  }
-  .hero-action:hover,
-  .hero-action:focus-visible {
-    background: var(--economist-red);
-    color: var(--paper-warm);
-    outline: none;
-  }
-
-  .portrait-card {
-    border-top: 3px double var(--ink);
-    padding-top: 12px;
-  }
-  .portrait-card img {
-    width: 100%;
-    aspect-ratio: 4 / 5;
-    object-fit: cover;
-    object-position: 50% 42%;
-    filter: saturate(0.82) contrast(1.04);
-  }
-
-  .kicker {
-    font-family: 'Roboto Condensed', sans-serif;
-    font-size: 0.75rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.14em;
-    color: var(--economist-red);
-    margin-bottom: 12px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  .kicker::before {
-    content: '';
-    width: 18px; height: 2px;
-    background: var(--economist-red);
-  }
-
-  .frontpage-headline {
-    font-family: 'EB Garamond', Georgia, serif;
-    font-size: clamp(2.2rem, 4vw, 3.4rem);
-    font-weight: 700;
-    line-height: 0.98;
-    letter-spacing: -0.018em;
-    margin-bottom: 18px;
-    color: var(--ink);
-  }
-  .frontpage-headline em {
-    font-style: italic;
-    font-weight: 500;
-  }
-  .frontpage-subhead {
-    font-size: clamp(1.6rem, 2.6vw, 2.4rem);
-    margin-bottom: 16px;
-  }
-
-  .frontpage-deck {
-    font-family: 'EB Garamond', Georgia, serif;
-    font-style: italic;
-    font-size: 1.15rem;
-    line-height: 1.45;
-    color: var(--ink-soft);
-    margin-bottom: 24px;
-    padding-bottom: 24px;
-    border-bottom: 1px solid var(--rule);
-  }
-  .frontpage-summary { font-size: 1.05rem; }
-
-  .delay-1 { animation-delay: 0.08s; }
-  .delay-2 { animation-delay: 0.16s; }
-
-  .frontpage-lede {
-    font-size: 1.02rem;
-    line-height: 1.55;
-    color: var(--ink-soft);
-  }
-  .frontpage-lede::first-letter {
-    font-family: 'EB Garamond', Georgia, serif;
-    float: left;
-    font-size: 4.2rem;
-    line-height: 0.85;
-    padding: 6px 8px 0 0;
-    font-weight: 700;
-    color: var(--economist-red);
-  }
-
-  /* Side columns */
-  .frontpage-side {
-    border-top: 1px solid var(--rule);
-    padding-top: 14px;
-  }
-  .frontpage-side h4 {
-    font-family: 'Roboto Condensed', sans-serif;
-    font-size: 0.72rem;
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    color: var(--ink-mute);
-    margin-bottom: 8px;
-  }
-  .frontpage-side p {
-    font-size: 0.95rem;
-    line-height: 1.5;
-    color: var(--ink);
-    margin-bottom: 14px;
-  }
-  .frontpage-side ul { list-style: none; }
-  .frontpage-side li {
-    font-size: 0.92rem;
-    line-height: 1.4;
-    padding: 8px 0;
-    border-bottom: 1px dotted var(--rule);
-    color: var(--ink-soft);
-  }
-  .frontpage-side li:last-child { border-bottom: none; }
-  .frontpage-side li strong { color: var(--ink); font-weight: 600; }
-  .language-note { font-size: 0.9rem; }
-  .frontpage-side .country-tag {
-    font-family: 'Roboto Condensed', sans-serif;
-    font-size: 0.68rem;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--economist-red);
-    font-weight: 700;
-    margin-right: 8px;
-  }
-
-  .status-tag {
-    display: inline-block;
-    align-self: flex-start;
-    padding: 4px 10px;
-    background: var(--ink);
-    color: var(--paper-warm);
-    font-family: 'Roboto Condensed', sans-serif;
-    font-size: 0.72rem;
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    margin-bottom: 12px;
-  }
-  .status-tag::before {
-    content: '●';
-    color: #4caf50;
-    margin-right: 6px;
-  }
-
-  /* === KEY FIGURES (numerical band) === */
-  .figures-band {
-    border-top: 3px double var(--ink);
-    border-bottom: 1px solid var(--rule);
-    padding: 32px 0;
-    background: var(--paper-deep);
-  }
-  .figures-grid {
-    display: grid;
-    grid-template-columns: auto repeat(4, 1fr);
-    gap: 32px;
-    align-items: center;
-  }
-  .figures-label {
-    font-family: 'Roboto Condensed', sans-serif;
-    font-size: 0.72rem;
-    text-transform: uppercase;
-    letter-spacing: 0.14em;
-    color: var(--ink-soft);
-    line-height: 1.3;
-    border-right: 1px solid var(--rule);
-    padding-right: 24px;
-    max-width: 120px;
-  }
-  .figure { text-align: left; }
-  .figure .num {
-    font-family: 'EB Garamond', serif;
-    font-size: clamp(1.8rem, 3vw, 2.6rem);
-    font-weight: 600;
-    line-height: 1;
-    letter-spacing: -0.03em;
-    color: var(--ink);
-    margin-bottom: 6px;
-  }
-  .figure .num em {
-    font-style: italic;
-    color: var(--economist-red);
-    font-weight: 500;
-  }
-  .figure .desc {
-    font-family: 'Roboto Condensed', sans-serif;
-    font-size: 0.78rem;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: var(--ink-soft);
-    line-height: 1.35;
-  }
-  .figure-context {
-    display: block;
-    margin-top: 5px;
-    font-family: 'EB Garamond', serif;
-    font-style: italic;
-    font-size: 0.86rem;
-    color: var(--economist-red);
-    text-transform: none;
-    letter-spacing: 0;
-    font-weight: 500;
-    line-height: 1.3;
-  }
-
-  /* === SECTION === */
-  section.article { padding: 64px 0 48px; border-bottom: 1px solid var(--rule); }
-  section.article-remote { border-bottom: none; padding-bottom: 0; }
-  .contact-section { padding: 0; }
-  .section-marker {
-    display: flex;
-    align-items: baseline;
-    gap: 16px;
-    margin-bottom: 28px;
-  }
-  .section-marker .number {
-    font-family: 'Roboto Condensed', sans-serif;
-    font-weight: 700;
-    color: var(--economist-red);
-    font-size: 0.85rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-  }
-  .section-marker .rule {
-    flex: 1;
-    height: 1px;
-    background: var(--ink);
-  }
-  .section-title {
-    font-family: 'EB Garamond', serif;
-    font-size: clamp(1.8rem, 3vw, 2.4rem);
-    font-weight: 700;
-    line-height: 1;
-    letter-spacing: -0.018em;
-    margin-bottom: 8px;
-  }
-  .section-title em {
-    font-style: italic;
-    font-weight: 500;
-    color: var(--economist-red);
-  }
-  .section-deck {
-    font-family: 'EB Garamond', serif;
-    font-style: italic;
-    font-size: 1.15rem;
-    color: var(--ink-soft);
-    max-width: 640px;
-    margin-bottom: 40px;
-    line-height: 1.45;
-  }
-
-  /* === ROADMAP / TIMELINE === */
-  .legend {
-    display: flex;
-    gap: 28px;
-    margin-bottom: 24px;
-    font-family: 'Roboto Condensed', sans-serif;
-    font-size: 0.78rem;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: var(--ink-soft);
-    padding-bottom: 16px;
-    border-bottom: 1px solid var(--rule);
-  }
-  .legend-item { display: flex; align-items: center; gap: 8px; }
-  .legend-item .swatch {
-    width: 12px; height: 12px;
-  }
-  .legend-item .swatch.entr { background: var(--economist-red); }
-  .legend-item .swatch.corp { background: var(--corp); }
-
-  .roadmap-wrap {
-    overflow-x: auto;
-    overflow-y: visible;
-    padding: 60px 0 80px;
-    margin: 0 -40px;
-    padding-left: 40px;
-    padding-right: 40px;
-    scrollbar-width: thin;
-    scrollbar-color: var(--rule) transparent;
-  }
-  .roadmap-wrap::-webkit-scrollbar { height: 8px; }
-  .roadmap-wrap::-webkit-scrollbar-thumb { background: var(--rule); border-radius: 4px; }
-
-  .roadmap {
-    position: relative;
-    display: flex;
-    gap: 0;
-    min-width: 1900px;
-    padding: 80px 0;
-  }
-  .roadmap::before {
-    content: '';
-    position: absolute;
-    left: 0; right: 0; top: 50%;
-    height: 1px;
-    background: var(--ink);
-    transform: translateY(-0.5px);
-  }
-
-  .roadmap-marker {
-    flex-shrink: 0;
-    align-self: center;
-    padding: 0 28px;
-    z-index: 3;
-    position: relative;
-  }
-  .roadmap-marker-start { padding-right: 36px; }
-  .roadmap-marker-end { padding-left: 36px; }
-  .roadmap-marker-start .marker-label {
-    font-family: 'Roboto Condensed', sans-serif;
-    font-weight: 700;
-    font-size: 0.85rem;
-    color: var(--paper-warm);
-    background: var(--economist-red);
-    padding: 6px 12px;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    white-space: nowrap;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .roadmap-marker-start .marker-label::after { content: '←'; }
-  .roadmap-marker-end .marker-label {
-    font-family: 'EB Garamond', serif;
-    font-style: italic;
-    font-size: 1rem;
-    color: var(--ink-mute);
-    white-space: nowrap;
-  }
-  .roadmap-marker-end .marker-sub {
-    font-family: 'Roboto Condensed', sans-serif;
-    font-size: 0.68rem;
-    color: var(--ink-mute);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    margin-top: 2px;
-  }
-
-  .node {
-    flex: 1;
-    min-width: 165px;
-    position: relative;
-    cursor: pointer;
-    background: none;
-    border: none;
-    font-family: inherit;
-    color: inherit;
-    text-align: left;
-  }
-  .node-dot {
-    position: absolute;
-    left: 50%; top: 50%;
-    transform: translate(-50%, -50%);
-    width: 12px; height: 12px;
-    background: var(--paper);
-    border: 2px solid var(--ink);
-    transition: all 0.2s ease;
-    z-index: 2;
-  }
-  .node[data-type="entr"] .node-dot { border-color: var(--entr); }
-  .node[data-type="corp"] .node-dot { border-color: var(--corp); }
-  .node:hover .node-dot {
-    transform: translate(-50%, -50%) scale(1.5);
-  }
-  .node[data-type="entr"]:hover .node-dot { background: var(--entr); }
-  .node[data-type="corp"]:hover .node-dot { background: var(--corp); }
-  .node:focus-visible {
-    outline: 2px solid var(--economist-red);
-    outline-offset: 6px;
-  }
-
-  .node-content {
-    position: absolute;
-    left: 50%;
-    width: 175px;
-    transform: translateX(-50%);
-    padding: 12px 0;
-  }
-  .node[data-pos="odd"] .node-content { top: calc(50% + 22px); }
-  .node[data-pos="even"] .node-content { bottom: calc(50% + 22px); }
-  .node[data-pos="odd"] .node-content::before,
-  .node[data-pos="even"] .node-content::before {
-    content: '';
-    position: absolute;
-    left: 50%;
-    width: 1px;
-    background: var(--ink);
-    opacity: 0.3;
-  }
-  .node[data-pos="odd"] .node-content::before { top: -22px; height: 22px; }
-  .node[data-pos="even"] .node-content::before { bottom: -22px; height: 22px; }
-
-  .node-year {
-    font-family: 'Roboto Condensed', sans-serif;
-    font-size: 0.7rem;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--ink-mute);
-    margin-bottom: 4px;
-    font-weight: 500;
-  }
-  .node-title {
-    font-family: 'EB Garamond', serif;
-    font-size: 1.1rem;
-    font-weight: 700;
-    line-height: 1.15;
-    letter-spacing: -0.012em;
-    color: var(--ink);
-  }
-  .node[data-type="entr"] .node-title { color: var(--entr); }
-  .node[data-type="corp"] .node-title { color: var(--corp); }
-  .node-role {
-    font-family: 'EB Garamond', serif;
-    font-style: italic;
-    font-size: 0.85rem;
-    color: var(--ink-soft);
-    margin-top: 2px;
-    line-height: 1.3;
-  }
-
-  /* === MODAL === */
-  .modal-backdrop {
-    position: fixed; inset: 0;
-    background: rgba(21, 17, 13, 0.65);
-    z-index: 100;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.3s ease;
-  }
-  .modal-backdrop.open { opacity: 1; pointer-events: auto; }
-
-  .modal {
-    position: fixed;
-    top: 0; right: 0;
-    height: 100%;
-    width: min(620px, 94vw);
-    background: var(--paper-warm);
-    z-index: 101;
-    transform: translateX(100%);
-    transition: transform 0.4s cubic-bezier(0.32, 0.72, 0, 1);
-    overflow-y: auto;
-    box-shadow: -20px 0 60px rgba(0,0,0,0.2);
-  }
-  .modal.open { transform: translateX(0); }
-  .modal-inner { padding: 56px 56px 80px; }
-
-  .modal-close {
-    position: absolute;
-    top: 20px; right: 20px;
-    width: 40px; height: 40px;
-    background: var(--ink);
-    color: var(--paper);
-    border: none;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1rem;
-    transition: background 0.2s;
-    font-family: inherit;
-  }
-  .modal-close:hover { background: var(--economist-red); }
-
-  .modal-section-mark {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 24px;
-    font-family: 'Roboto Condensed', sans-serif;
-    font-size: 0.74rem;
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    font-weight: 700;
-  }
-  .modal-section-mark.entr { color: var(--economist-red); }
-  .modal-section-mark.corp { color: var(--corp); }
-  .modal-section-mark::before {
-    content: '';
-    width: 24px; height: 2px;
-    background: currentColor;
-  }
-
-  .modal-year {
-    font-family: 'Roboto Condensed', sans-serif;
-    font-size: 0.82rem;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--ink-soft);
-    margin-bottom: 6px;
-  }
-  .modal-title {
-    font-family: 'EB Garamond', serif;
-    font-size: 2.4rem;
-    font-weight: 700;
-    line-height: 1;
-    letter-spacing: -0.022em;
-    margin-bottom: 8px;
-    color: var(--ink);
-  }
-  .modal-role {
-    font-family: 'EB Garamond', serif;
-    font-style: italic;
-    font-size: 1.15rem;
-    color: var(--ink-soft);
-    margin-bottom: 28px;
-    padding-bottom: 24px;
-    border-bottom: 1px solid var(--rule);
-  }
-  .modal-headline {
-    font-family: 'EB Garamond', serif;
-    font-size: 1.32rem;
-    line-height: 1.35;
-    font-weight: 500;
-    color: var(--ink);
-    padding-left: 16px;
-    border-left: 3px solid var(--economist-red);
-    margin-bottom: 28px;
-  }
-  .modal-body {
-    color: var(--ink);
-    font-size: 1.02rem;
-    line-height: 1.55;
-  }
-  .modal-body p { margin-bottom: 16px; }
-  .modal-body p:first-of-type::first-letter {
-    font-family: 'EB Garamond', serif;
-    float: left;
-    font-size: 3.4rem;
-    line-height: 0.85;
-    padding: 4px 8px 0 0;
-    font-weight: 700;
-    color: var(--economist-red);
-  }
-  .modal-body strong { color: var(--ink); font-weight: 700; }
-
-  .modal-stats {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0;
-    border-top: 2px solid var(--ink);
-    border-bottom: 2px solid var(--ink);
-    margin: 28px 0;
-  }
-  .modal-stat {
-    padding: 14px 18px;
-    border-right: 1px solid var(--rule);
-    border-bottom: 1px solid var(--rule);
-  }
-  .modal-stat:nth-child(2n) { border-right: none; }
-  .modal-stat:nth-last-child(-n+2) { border-bottom: none; }
-  .modal-stat .v {
-    font-family: 'EB Garamond', serif;
-    font-size: 1.7rem;
-    font-weight: 700;
-    color: var(--economist-red);
-    line-height: 1;
-    margin-bottom: 4px;
-  }
-  .modal-stat .l {
-    font-family: 'Roboto Condensed', sans-serif;
-    font-size: 0.74rem;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: var(--ink-soft);
-  }
-
-  .modal-takeaway {
-    margin-top: 32px;
-    padding: 20px 0;
-    border-top: 3px double var(--ink);
-    border-bottom: 1px solid var(--rule);
-  }
-  .modal-takeaway .label {
-    font-family: 'Roboto Condensed', sans-serif;
-    font-size: 0.72rem;
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    font-weight: 700;
-    color: var(--economist-red);
-    margin-bottom: 8px;
-  }
-  .modal-takeaway p {
-    font-family: 'EB Garamond', serif;
-    font-style: italic;
-    font-size: 1.1rem;
-    line-height: 1.5;
-    color: var(--ink);
-  }
-
-  /* === INTERSECTIONS === */
-  .intersections {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 0;
-    border-top: 1px solid var(--ink);
-    border-bottom: 1px solid var(--ink);
-  }
-  .intersection {
-    padding: 32px 28px;
-    border-right: 1px solid var(--rule);
-    position: relative;
-  }
-  .intersection:last-child { border-right: none; }
-  .intersection::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 3px;
-    background: var(--economist-red);
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 0.4s ease;
-  }
-  .intersection:hover::before { transform: scaleX(1); }
-  .intersection .num {
-    font-family: 'Roboto Condensed', sans-serif;
-    font-weight: 700;
-    font-size: 0.78rem;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--economist-red);
-    margin-bottom: 14px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  .intersection h3 {
-    font-family: 'EB Garamond', serif;
-    font-size: 1.35rem;
-    font-weight: 700;
-    line-height: 1.18;
-    letter-spacing: -0.012em;
-    margin-bottom: 14px;
-    color: var(--ink);
-  }
-  .intersection h3 em { font-style: italic; font-weight: 500; color: var(--economist-red); }
-  .intersection p {
-    color: var(--ink-soft);
-    font-size: 0.98rem;
-    line-height: 1.5;
-  }
-
-  /* === REMOTE === */
-  .remote-spread {
-    background: var(--ink);
-    color: var(--paper-warm);
-    margin: 0 -40px;
-    padding: 64px 40px;
-    border-top: 4px solid var(--economist-red);
-  }
-  .remote-inner {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: minmax(260px, 0.9fr) minmax(360px, 1.2fr);
-    gap: 48px;
-    align-items: center;
-  }
-  .remote-spread .kicker {
-    color: var(--economist-red);
-  }
-  .remote-spread .kicker::before { background: var(--economist-red); }
-  .remote-spread h2 {
-    font-family: 'EB Garamond', serif;
-    font-size: clamp(2rem, 3.5vw, 3rem);
-    font-weight: 700;
-    line-height: 1;
-    letter-spacing: -0.022em;
-    color: var(--paper-warm);
-    margin-bottom: 24px;
-  }
-  .remote-spread h2 em { font-style: italic; font-weight: 500; color: var(--economist-red); }
-  .remote-spread p {
-    color: rgba(245, 241, 232, 0.78);
-    line-height: 1.6;
-    font-size: 1.05rem;
-  }
-  .remote-spread p + p { margin-top: 14px; }
-  .remote-photo {
-    border-top: 1px solid rgba(245, 241, 232, 0.5);
-    padding-top: 12px;
-  }
-  .remote-photo img {
-    width: 100%;
-    aspect-ratio: 4 / 5;
-    object-fit: cover;
-    object-position: 52% 48%;
-    filter: grayscale(0.08) contrast(1.05);
-  }
-  .remote-photo figcaption {
-    color: rgba(245, 241, 232, 0.58);
-  }
-
-  /* === PERSONAL === */
-  .personal-spread {
-    display: grid;
-    grid-template-columns: minmax(220px, 0.55fr) minmax(300px, 1.05fr) minmax(280px, 0.9fr);
-    gap: 38px;
-    align-items: start;
-  }
-  .about-portrait img {
-    width: 100%;
-    aspect-ratio: 4 / 5;
-    object-fit: cover;
-    object-position: 50% 42%;
-  }
-  .personal-text {
-    font-family: 'EB Garamond', serif;
-    font-size: 1.32rem;
-    line-height: 1.5;
-    color: var(--ink);
-  }
-  .personal-text::first-letter {
-    font-family: 'EB Garamond', serif;
-    float: left;
-    font-size: 4rem;
-    line-height: 0.85;
-    padding: 6px 10px 0 0;
-    font-weight: 700;
-    color: var(--economist-red);
-  }
-  .personal-text em { font-style: italic; font-weight: 500; }
-
-  .pet-projects {
-    display: flex;
-    flex-direction: column;
-  }
-  .pet-projects-label {
-    font-family: 'Roboto Condensed', sans-serif;
-    font-size: 0.78rem;
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    font-weight: 700;
-    color: var(--economist-red);
-    padding-bottom: 10px;
-    border-bottom: 2px solid var(--ink);
-    margin-bottom: 0;
-  }
-  .pet-card {
-    padding: 18px 0;
-    border-bottom: 1px solid var(--rule);
-    cursor: pointer;
-    display: flex;
-    align-items: start;
-    gap: 16px;
-    transition: padding 0.25s;
-  }
-  .pet-card:hover { padding-left: 8px; }
-  .pet-card:hover h4 { color: var(--economist-red); }
-  .pet-card .pet-num {
-    font-family: 'Roboto Condensed', sans-serif;
-    font-size: 0.72rem;
-    color: var(--ink-mute);
-    font-weight: 700;
-    letter-spacing: 0.06em;
-    flex-shrink: 0;
-    padding-top: 2px;
-  }
-  .pet-card h4 {
-    font-family: 'EB Garamond', serif;
-    font-size: 1.1rem;
-    font-weight: 700;
-    margin-bottom: 4px;
-    line-height: 1.2;
-    transition: color 0.2s;
-  }
-  .pet-card p {
-    font-size: 0.92rem;
-    color: var(--ink-soft);
-    line-height: 1.4;
-  }
-  .pet-placeholder {
-    font-family: 'Roboto Condensed', sans-serif;
-    font-size: 0.7rem;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--ink-mute);
-    margin-top: 6px;
-    font-style: italic;
-  }
-
-  /* === CTA === */
-  .cta-section {
-    background: var(--paper-deep);
-    margin: 0 -40px;
-    padding: 64px 40px;
-    border-top: 3px double var(--ink);
-    border-bottom: 3px double var(--ink);
-  }
-  .cta-grid {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 1px;
-    background: var(--ink);
-    border: 1px solid var(--ink);
-  }
-  .cta-card {
-    padding: 44px 40px;
-    background: var(--paper);
-    transition: background 0.25s;
-  }
-  .cta-card:hover { background: var(--paper-warm); }
-  .cta-card .kicker { margin-bottom: 16px; }
-  .cta-card h3 {
-    font-family: 'EB Garamond', serif;
-    font-size: 1.7rem;
-    font-weight: 700;
-    line-height: 1.15;
-    letter-spacing: -0.018em;
-    margin-bottom: 14px;
-  }
-  .cta-card h3 em { font-style: italic; font-weight: 500; color: var(--economist-red); }
-  .cta-card p { color: var(--ink-soft); margin-bottom: 24px; font-size: 0.98rem; line-height: 1.55; }
-  .cta-card.cta-secondary {
-    padding: 28px 40px;
-    background: var(--paper-deep);
-  }
-  .cta-card.cta-secondary:hover { background: var(--paper); }
-  .cta-card.cta-secondary h3 {
-    font-size: 1.25rem;
-    margin-bottom: 8px;
-  }
-  .cta-card.cta-secondary p {
-    margin-bottom: 16px;
-    font-size: 0.94rem;
-  }
-  .cta-card.cta-secondary .kicker { margin-bottom: 10px; }
-  .cta-links { display: flex; gap: 12px; flex-wrap: wrap; }
-  .cta-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 9px 18px;
-    background: var(--ink);
-    color: var(--paper-warm);
-    text-decoration: none;
-    font-family: 'Roboto Condensed', sans-serif;
-    font-size: 0.84rem;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    font-weight: 500;
-    transition: background 0.2s;
-  }
-  .cta-link:hover { background: var(--economist-red); }
-  .cta-link svg { width: 14px; height: 14px; }
-
-  /* === COLOPHON / FOOTER === */
-  footer {
-    padding: 32px 40px;
-    text-align: center;
-    border-top: 1px solid var(--rule);
-    background: var(--paper);
-  }
-  .colophon {
-    font-family: 'Roboto Condensed', sans-serif;
-    font-size: 0.74rem;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--ink-mute);
-  }
-  .colophon strong { color: var(--ink); font-weight: 700; }
-  .colophon .sep { margin: 0 12px; color: var(--rule); }
-
-  /* === RESPONSIVE === */
-  @media (max-width: 980px) {
-    .container, .masthead-inner { padding: 0 20px; }
-    .masthead { padding: 12px 0; }
-    .masthead-meta { display: none; }
-    .masthead-nav { display: none; }
-    .frontpage { padding: 18px 0 38px; }
-    .frontpage-grid { grid-template-columns: 1fr; gap: 26px; }
-    .frontpage-copy { border-top: none; padding-top: 0; }
-    .frontpage-visual { order: -1; }
-    .frontpage-editorial { grid-template-columns: 1fr; gap: 24px; }
-    .figures-grid { grid-template-columns: 1fr 1fr; }
-    .figures-label {
-      grid-column: 1 / -1;
-      border-right: none;
-      border-bottom: 1px solid var(--rule);
-      padding-bottom: 14px;
-      max-width: none;
-    }
-    .intersections { grid-template-columns: 1fr; }
-    .intersection { border-right: none; border-bottom: 1px solid var(--rule); }
-    .intersection:last-child { border-bottom: none; }
-    .remote-spread { margin: 0 -20px; padding: 48px 20px; }
-    .remote-inner { grid-template-columns: 1fr; gap: 26px; }
-    .personal-spread { grid-template-columns: 1fr; gap: 36px; }
-    .cta-grid { grid-template-columns: 1fr; }
-    .cta-section { margin: 0 -20px; padding: 48px 20px; }
-    .modal-inner { padding: 48px 28px 60px; }
-    .modal-title { font-size: 1.7rem; }
-  }
-
-  @media (min-width: 641px) and (max-width: 980px) {
-    .frontpage-visual img {
-      aspect-ratio: 16 / 10;
-      object-position: 50% 0;
-    }
-    .portrait-card img,
-    .remote-photo img {
-      aspect-ratio: 16 / 10;
-    }
-  }
-
-  @media (max-width: 640px) {
-    body { font-size: 16px; }
-    .container, .masthead-inner { padding: 0 18px; }
-    .frontpage-headline {
-      font-size: clamp(2.05rem, 11vw, 3rem);
-      letter-spacing: -0.01em;
-    }
-    .frontpage-headline.frontpage-subhead {
-      font-size: clamp(1.5rem, 7vw, 2rem);
-    }
-    .frontpage-deck {
-      font-size: 1.04rem;
-      margin-bottom: 18px;
-      padding-bottom: 18px;
-    }
-    .frontpage-summary { font-size: 1rem; }
-    .status-tag {
-      font-size: 0.7rem;
-      letter-spacing: 0.06em;
-      line-height: 1.4;
-    }
-    .hero-actions {
-      margin: 18px 0 18px;
-    }
-    .hero-action {
-      flex: 1 1 132px;
-      justify-content: center;
-      padding-inline: 12px;
-    }
-    .figures-band { padding: 24px 0; }
-    .figure .num { font-size: 2rem; }
-    .figure-context { font-size: 0.82rem; }
-    .cta-card { padding: 32px 22px; }
-    .cta-card.cta-secondary { padding: 22px 22px; }
-    .cta-card h3 { font-size: 1.4rem; }
-    .cta-card.cta-secondary h3 { font-size: 1.15rem; }
-    section.article { padding: 42px 0 36px; }
-    .section-marker { margin-bottom: 22px; }
-    .section-deck { margin-bottom: 28px; }
-    .legend {
-      gap: 16px;
-      flex-wrap: wrap;
-      margin-bottom: 18px;
-    }
-
-    .roadmap-wrap {
-      overflow: visible;
-      margin: 0;
-      padding: 10px 0 0;
-    }
-    .roadmap {
-      display: block;
-      min-width: 0;
-      padding: 0;
-    }
-    .roadmap::before {
-      left: 6px;
-      right: auto;
-      top: 0;
-      bottom: 0;
-      width: 1px;
-      height: auto;
-      transform: none;
-      background: var(--rule-strong);
-      opacity: 0.35;
-    }
-    .roadmap-marker {
-      padding: 0 0 18px 28px;
-    }
-    .roadmap-marker-start .marker-label::after { content: ''; }
-    .roadmap-marker-end {
-      padding: 18px 0 0 28px;
-      border-top: 1px solid var(--rule);
-    }
-    .node {
-      display: block;
-      width: 100%;
-      min-width: 0;
-      min-height: 0;
-      padding: 15px 0 17px 28px;
-      border-bottom: 1px solid var(--rule);
-    }
-    .node-dot {
-      left: 6px;
-      top: 26px;
-      width: 11px;
-      height: 11px;
-    }
-    .node-content {
-      position: static;
-      width: auto;
-      transform: none;
-      padding: 0;
-    }
-    .node[data-pos="odd"] .node-content,
-    .node[data-pos="even"] .node-content {
-      top: auto;
-      bottom: auto;
-    }
-    .node[data-pos="odd"] .node-content::before,
-    .node[data-pos="even"] .node-content::before {
-      display: none;
-    }
-    .node-title { font-size: 1.18rem; }
-    .node-role { font-size: 0.9rem; }
-
-    .remote-spread h2 { font-size: clamp(1.85rem, 10vw, 2.6rem); }
-    .personal-text { font-size: 1.18rem; }
-    .colophon {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-    .colophon .sep { display: none; }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    html { scroll-behavior: auto; }
-    *, *::before, *::after {
-      animation-duration: 0.01ms !important;
-      animation-iteration-count: 1 !important;
-      transition-duration: 0.01ms !important;
-    }
-  }
-</style>
-</head>
-<body>
-
-<!-- MASTHEAD -->
-<header class="masthead">
-  <div class="masthead-inner">
-    <div class="nameplate">Тесленко<em>·</em>NT</div>
-    <div class="masthead-meta">
-       &nbsp;<span class="sep">·</span>&nbsp;  &nbsp;<span class="sep">·</span>&nbsp; Florianópolis Edition &nbsp;<span class="sep">·</span>&nbsp; April 29, 2026
-    </div>
-    <ul class="masthead-nav">
-      <li><a href="#path">The Path</a></li>
-      <li><a href="#intersections">Intersections</a></li>
-      <li><a href="#remote">Remote</a></li>
-      <li><a href="#about">Personal</a></li>
-      <li><a href="#contact">Contact</a></li>
-    </ul>
-  </div>
-</header>
-
-<!-- FRONT PAGE -->
-<div class="container">
-  <section class="frontpage" aria-labelledby="profile-title">
-    <div class="frontpage-grid">
-
-      <figure class="frontpage-visual reveal">
-        <img src="2-hero.jpg" width="880" height="1100" alt="Никита Тесленко в журнальной композиции с графиками и красным кругом" fetchpriority="high" decoding="async">
-        <figcaption><span>Cover story</span>15 лет запусков, розницы, операций и продукта</figcaption>
-      </figure>
-
-      <div class="frontpage-copy reveal delay-1">
-        <div class="kicker">Profile</div>
-        <h1 class="frontpage-headline" id="profile-title">
-          Запускаю проекты с&nbsp;2010&nbsp;года.<br>На&nbsp;двух <em>полюсах</em> бизнеса.
-        </h1>
-        <p class="frontpage-deck">
-          15&nbsp;лет, четыре страны, девять индустрий — от&nbsp;лотка кукурузы до&nbsp;цифровой клиники. Запускаю руками, масштабирую процессом.
-        </p>
-        <div class="hero-actions">
-          <a class="hero-action" href="https://t.me/nigilist_view">Telegram</a>
-          <a class="hero-action secondary" href="mailto:venik6000@gmail.com">Email</a>
-        </div>
-        <div class="kicker">From the Editor</div>
-        <h2 class="frontpage-headline frontpage-subhead">
-          Один <em>взгляд&nbsp;сверху</em> на&nbsp;четыре экономики
-        </h2>
-        <p class="frontpage-deck frontpage-summary">
-          Российская розница, турецкая премиум-недвижимость, бразильское производство, московский HealthTech, польский fashion-стартап. Когда захожу в&nbsp;новый проект, у&nbsp;меня уже есть с&nbsp;чем сравнить. Это не&nbsp;консультантский фреймворк, а&nbsp;насмотренность — она помогает увидеть проблему контрастно и&nbsp;принять решение быстрее. Пять экономик, девять индустрий, одна оптика.
-        </p>
-        <div class="frontpage-editorial">
-          <p class="frontpage-lede">
-            Каждые 2–3&nbsp;года я&nbsp;менял сторону. Корпорация — предприниматель — снова корпорация. Это не&nbsp;разброс. Корпорация научила меня дисциплине процесса. Предпринимательство — скорости решений. В&nbsp;большинстве карьер — одна школа. В&nbsp;этой — обе.
-          </p>
-          <aside class="frontpage-briefing" aria-label="Короткие факты">
-            <div class="frontpage-side">
-              <h4>Dispatches</h4>
-              <ul>
-                <li><span class="country-tag">TR</span><strong>Maerton</strong> · 500&nbsp;М&nbsp;₽ оборота за&nbsp;4&nbsp;месяца с&nbsp;нуля</li>
-                <li><span class="country-tag">RU</span><strong>HealthTech-сервис</strong> · оцифровал 7&nbsp;процессов клиники, −60% ручной работы</li>
-                <li><span class="country-tag">BR</span><strong>Производство мебели</strong> · запуск с&nbsp;партнёром до&nbsp;product/market&nbsp;fit</li>
-                <li><span class="country-tag">PL</span>Go-to-market для <strong>fashion-бренда</strong></li>
-              </ul>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Никита Тесленко · Helicopter View</title>
+        <meta name="description" content="Никита Тесленко — руководитель продукта и запусков: 16 лет, четыре экономики, retail, operations, HealthTech и advisory.">
+        <meta name="theme-color" content="#f5f1e8">
+        <link rel="preload" as="image" href="2-hero.jpg">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="css/theme.css" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500&family=Roboto+Condensed:wght@400;500;700&display=swap" rel="stylesheet">
+        <style>:root { --paper: #fbfaf7; --paper-deep: #f3f1ea; --paper-warm: #ffffff; --ink: #15110d; --ink-soft: #3a342a; --ink-mute: #7a7468; --rule: #d8d3c4; --rule-strong: #1a1611; --economist-red: #e3120b; --economist-red-deep: #b80e08; --corp: #1a3a52; --entr: #e3120b; } * { margin: 0; padding: 0; box-sizing: border-box; } body { background: var(--paper); color: var(--ink); font-family: 'EB Garamond', Georgia, serif; font-size: 17px; line-height: 1.45; overflow-x: hidden; -webkit-font-smoothing: antialiased; font-feature-settings: "onum" 1, "kern" 1, "liga" 1; } img { display: block; max-width: 100%; height: auto; } @keyframes pageRise { from {  opacity: 0;  transform: translateY(14px); }  to {  opacity: 1;  transform: translateY(0); } } .reveal { animation: pageRise 0.65s cubic-bezier(0.22, 0.61, 0.36, 1) both; } .serif { font-family: 'EB Garamond', Georgia, serif; } .cond { font-family: 'Roboto Condensed', sans-serif; } /* Container */.container { max-width: 1280px; margin: 0 auto; padding: 0 40px; position: relative; z-index: 2; } /* === MASTHEAD === */.masthead { border-bottom: 1px solid var(--ink); padding: 16px 0 14px; background: var(--paper); position: sticky; top: 0; z-index: 50; backdrop-filter: blur(4px); } .masthead-inner { max-width: 1280px; margin: 0 auto; padding: 0 40px; display: flex; align-items: center; justify-content: space-between; gap: 32px; } .brand { font-family: 'EB Garamond', Georgia, serif; font-size: 1.5rem; font-weight: 700; color: var(--ink); text-decoration: none; letter-spacing: -0.01em; line-height: 1; } .brand em { font-style: italic; font-weight: 500; color: var(--economist-red); } .masthead-nav { display: flex; gap: 22px; list-style: none; font-family: 'Roboto Condensed', sans-serif; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em; } .masthead-nav a { color: var(--ink); text-decoration: none; border-bottom: 2px solid transparent; padding-bottom: 2px; transition: border-color 0.2s, color 0.2s; } .masthead-nav a:hover { border-bottom-color: var(--economist-red); color: var(--economist-red); } /* === HERO / FRONT PAGE === */.frontpage { padding: 36px 0 48px; border-bottom: 1px solid var(--rule); } .frontpage-grid { display: grid; grid-template-columns: minmax(340px, 0.78fr) minmax(520px, 1.22fr); gap: 34px; align-items: stretch; } .frontpage-visual { border-top: 1px solid var(--ink); border-bottom: 1px solid var(--rule); padding: 12px 0 0; min-width: 0; display: flex; flex-direction: column; } .frontpage-visual img { width: 100%; flex: 1; min-height: 0; aspect-ratio: auto; object-fit: cover; object-position: 52% 42%; filter: saturate(0.9) contrast(1.05); } .frontpage-visual figcaption, .remote-photo figcaption, .portrait-card figcaption { font-family: 'EB Garamond', Georgia, serif; font-style: italic; font-size: 0.92rem; color: var(--ink-mute); padding: 10px 0 0; line-height: 1.4; } .frontpage-copy { border-top: 1px solid var(--ink); padding-top: 18px; display: flex; flex-direction: column; } .frontpage-editorial { display: grid; grid-template-columns: minmax(280px, 1fr) minmax(230px, 0.72fr); gap: 28px; align-items: start; margin-top: 28px; padding-top: 24px; border-top: 1px solid var(--rule); } .hero-actions { display: flex; flex-wrap: wrap; gap: 10px; margin: 16px 0 22px; } .hero-action { display: inline-flex; align-items: center; gap: 8px; min-height: 40px; padding: 10px 16px; background: var(--ink); color: var(--paper-warm); text-decoration: none; font-family: 'Roboto Condensed', sans-serif; font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; transition: background 0.2s, color 0.2s; } .hero-action.secondary { background: transparent; color: var(--ink); box-shadow: inset 0 0 0 1px var(--ink); } .hero-action:hover, .hero-action:focus-visible { background: var(--economist-red); color: var(--paper-warm); outline: none; } .portrait-card { border-top: 1px solid var(--ink); padding-top: 12px; } .portrait-card img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; object-position: 50% 42%; filter: saturate(0.82) contrast(1.04); } .kicker { font-family: 'Roboto Condensed', sans-serif; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.14em; color: var(--economist-red); margin-bottom: 12px; display: flex; align-items: center; gap: 10px; } .kicker::before { content: ''; width: 18px; height: 2px; background: var(--economist-red); } .frontpage-headline { font-family: 'EB Garamond', Georgia, serif; font-size: clamp(2.2rem, 4vw, 3.4rem); font-weight: 700; line-height: 0.98; letter-spacing: -0.018em; margin-bottom: 18px; color: var(--ink); } .frontpage-headline em { font-style: italic; font-weight: 500; } .frontpage-subhead { font-size: clamp(1.6rem, 2.6vw, 2.4rem); margin-top: 36px; padding-top: 28px; border-top: 1px solid var(--rule); margin-bottom: 16px; } .frontpage-deck { font-family: 'EB Garamond', Georgia, serif; font-style: italic; font-size: 1.15rem; line-height: 1.5; color: var(--ink-soft); margin-bottom: 24px; } .frontpage-summary { font-size: 1.05rem; } .delay-1 { animation-delay: 0.08s; } .delay-2 { animation-delay: 0.16s; } .frontpage-lede { font-size: 1.02rem; line-height: 1.6; color: var(--ink-soft); } /* Side column */.frontpage-side ul { list-style: none; } .frontpage-side li { font-size: 0.95rem; line-height: 1.5; padding: 10px 0; border-bottom: 1px solid var(--rule); color: var(--ink-soft); } .frontpage-side li:first-child { padding-top: 0; } .frontpage-side li:last-child { border-bottom: none; } .frontpage-side li strong { color: var(--ink); font-weight: 700; } .frontpage-side .country-tag { font-family: 'Roboto Condensed', sans-serif; font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--economist-red); font-weight: 700; margin-right: 8px; } .status-tag { display: inline-block; align-self: flex-start; padding: 4px 10px; background: var(--ink); color: var(--paper-warm); font-family: 'Roboto Condensed', sans-serif; font-size: 0.72rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px; } .status-tag::before { content: '●'; color: #4caf50; margin-right: 6px; } /* === KEY FIGURES (numerical band) === */.figures-band { border-top: 1px solid var(--ink); border-bottom: 1px solid var(--ink); padding: 32px 0; } .figures-grid { display: grid; grid-template-columns: auto repeat(4, 1fr); gap: 32px; align-items: center; } .figures-label { font-family: 'Roboto Condensed', sans-serif; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.14em; color: var(--ink-soft); line-height: 1.3; border-right: 1px solid var(--rule); padding-right: 24px; max-width: 120px; } .figure { text-align: left; } .figure .num { font-family: 'EB Garamond', serif; font-size: clamp(1.8rem, 3vw, 2.6rem); font-weight: 600; line-height: 1; letter-spacing: -0.03em; color: var(--ink); margin-bottom: 6px; } .figure .num em { font-style: italic; color: var(--economist-red); font-weight: 500; } .figure .desc { font-family: 'Roboto Condensed', sans-serif; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-soft); line-height: 1.35; } .figure-context { display: block; margin-top: 5px; font-family: 'EB Garamond', serif; font-style: italic; font-size: 0.86rem; color: var(--economist-red); text-transform: none; letter-spacing: 0; font-weight: 500; line-height: 1.3; } /* === SECTION === */section.article { padding: 64px 0 48px; border-bottom: 1px solid var(--rule); } section.article-remote { border-bottom: none; padding-bottom: 0; } .contact-section { padding: 0; } .section-marker { display: flex; align-items: baseline; gap: 16px; margin-bottom: 28px; } .section-marker .number { font-family: 'Roboto Condensed', sans-serif; font-weight: 700; color: var(--economist-red); font-size: 0.85rem; letter-spacing: 0.1em; text-transform: uppercase; } .section-marker .rule { flex: 1; height: 1px; background: var(--ink); } .section-title { font-family: 'EB Garamond', serif; font-size: clamp(1.8rem, 3vw, 2.4rem); font-weight: 700; line-height: 1; letter-spacing: -0.018em; margin-bottom: 8px; } .section-title em { font-style: italic; font-weight: 500; color: var(--economist-red); } .section-deck { font-family: 'EB Garamond', serif; font-style: italic; font-size: 1.15rem; color: var(--ink-soft); max-width: 640px; margin-bottom: 40px; line-height: 1.45; } /* === ROADMAP / TIMELINE === */.legend { display: flex; gap: 28px; margin-bottom: 24px; font-family: 'Roboto Condensed', sans-serif; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-soft); padding-bottom: 16px; border-bottom: 1px solid var(--rule); } .legend-item { display: flex; align-items: center; gap: 8px; } .legend-item .swatch { width: 12px; height: 12px; } .legend-item .swatch.entr { background: var(--economist-red); } .legend-item .swatch.corp { background: var(--corp); } .roadmap-wrap { overflow-x: auto; overflow-y: visible; padding: 60px 0 80px; margin: 0 -40px; padding-left: 40px; padding-right: 40px; scrollbar-width: thin; scrollbar-color: var(--rule) transparent; } .roadmap-wrap::-webkit-scrollbar { height: 8px; } .roadmap-wrap::-webkit-scrollbar-thumb { background: var(--rule); border-radius: 4px; } .roadmap { position: relative; display: flex; gap: 0; min-width: 1900px; padding: 80px 0; } .roadmap::before { content: ''; position: absolute; left: 0; right: 0; top: 50%; height: 1px; background: var(--ink); transform: translateY(-0.5px); } .roadmap-marker { flex-shrink: 0; align-self: center; padding: 0 28px; z-index: 3; position: relative; } .roadmap-marker-start { padding-right: 36px; } .roadmap-marker-end { padding-left: 36px; } .roadmap-marker-start .marker-label { font-family: 'Roboto Condensed', sans-serif; font-weight: 700; font-size: 0.85rem; color: var(--paper-warm); background: var(--economist-red); padding: 6px 12px; text-transform: uppercase; letter-spacing: 0.1em; white-space: nowrap; display: inline-flex; align-items: center; gap: 8px; } .roadmap-marker-start .marker-label::after { content: '←'; } .roadmap-marker-end .marker-label { font-family: 'EB Garamond', serif; font-style: italic; font-size: 1rem; color: var(--ink-mute); white-space: nowrap; } .roadmap-marker-end .marker-sub { font-family: 'Roboto Condensed', sans-serif; font-size: 0.68rem; color: var(--ink-mute); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 2px; } .node { flex: 1; min-width: 165px; position: relative; cursor: pointer; background: none; border: none; font-family: inherit; color: inherit; text-align: left; } .node-dot { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 12px; height: 12px; background: var(--paper); border: 2px solid var(--ink); transition: all 0.2s ease; z-index: 2; } .node[data-type="entr"] .node-dot { border-color: var(--entr); } .node[data-type="corp"] .node-dot { border-color: var(--corp); } .node:hover .node-dot { transform: translate(-50%, -50%) scale(1.5); } .node[data-type="entr"]:hover .node-dot { background: var(--entr); } .node[data-type="corp"]:hover .node-dot { background: var(--corp); } .node:focus-visible { outline: 2px solid var(--economist-red); outline-offset: 6px; } .node-content { position: absolute; left: 50%; width: 175px; transform: translateX(-50%); padding: 12px 0; } .node[data-pos="odd"] .node-content { top: calc(50% + 22px); } .node[data-pos="even"] .node-content { bottom: calc(50% + 22px); } .node[data-pos="odd"] .node-content::before, .node[data-pos="even"] .node-content::before { content: ''; position: absolute; left: 50%; width: 1px; background: var(--ink); opacity: 0.3; } .node[data-pos="odd"] .node-content::before { top: -22px; height: 22px; } .node[data-pos="even"] .node-content::before { bottom: -22px; height: 22px; } .node-year { font-family: 'Roboto Condensed', sans-serif; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-mute); margin-bottom: 4px; font-weight: 500; } .node-title { font-family: 'EB Garamond', serif; font-size: 1.1rem; font-weight: 700; line-height: 1.15; letter-spacing: -0.012em; color: var(--ink); } .node[data-type="entr"] .node-title { color: var(--entr); } .node[data-type="corp"] .node-title { color: var(--corp); } .node-role { font-family: 'EB Garamond', serif; font-style: italic; font-size: 0.85rem; color: var(--ink-soft); margin-top: 2px; line-height: 1.3; } /* === MODAL === */.modal-backdrop { position: fixed; inset: 0; background: rgba(21, 17, 13, 0.65); z-index: 100; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; } .modal-backdrop.open { opacity: 1; pointer-events: auto; } .modal { position: fixed; top: 0; right: 0; height: 100%; width: min(620px, 94vw); background: var(--paper-warm); z-index: 101; transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.32, 0.72, 0, 1); overflow-y: auto; box-shadow: -20px 0 60px rgba(0,0,0,0.2); } .modal.open { transform: translateX(0); } .modal-inner { padding: 56px 56px 80px; } .modal-close { position: absolute; top: 20px; right: 20px; width: 40px; height: 40px; background: var(--ink); color: var(--paper); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1rem; transition: background 0.2s; font-family: inherit; } .modal-close:hover { background: var(--economist-red); } .modal-section-mark { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; font-family: 'Roboto Condensed', sans-serif; font-size: 0.74rem; text-transform: uppercase; letter-spacing: 0.12em; font-weight: 700; } .modal-section-mark.entr { color: var(--economist-red); } .modal-section-mark.corp { color: var(--corp); } .modal-section-mark::before { content: ''; width: 24px; height: 2px; background: currentColor; } .modal-year { font-family: 'Roboto Condensed', sans-serif; font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink-soft); margin-bottom: 6px; } .modal-title { font-family: 'EB Garamond', serif; font-size: 2.4rem; font-weight: 700; line-height: 1; letter-spacing: -0.022em; margin-bottom: 8px; color: var(--ink); } .modal-role { font-family: 'EB Garamond', serif; font-style: italic; font-size: 1.15rem; color: var(--ink-soft); margin-bottom: 28px; padding-bottom: 24px; border-bottom: 1px solid var(--rule); } .modal-headline { font-family: 'EB Garamond', serif; font-size: 1.32rem; line-height: 1.35; font-weight: 500; color: var(--ink); padding-left: 16px; border-left: 3px solid var(--economist-red); margin-bottom: 28px; } .modal-body { color: var(--ink); font-size: 1.02rem; line-height: 1.55; } .modal-body p { margin-bottom: 16px; } .modal-body p:first-of-type::first-letter { font-family: 'EB Garamond', serif; float: left; font-size: 3.4rem; line-height: 0.85; padding: 4px 8px 0 0; font-weight: 700; color: var(--economist-red); } .modal-body strong { color: var(--ink); font-weight: 700; } .modal-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border-top: 1px solid var(--ink); border-bottom: 1px solid var(--ink); margin: 28px 0; } .modal-stat { padding: 14px 18px; border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule); } .modal-stat:nth-child(2n) { border-right: none; } .modal-stat:nth-last-child(-n+2) { border-bottom: none; } .modal-stat .v { font-family: 'EB Garamond', serif; font-size: 1.7rem; font-weight: 700; color: var(--economist-red); line-height: 1; margin-bottom: 4px; } .modal-stat .l { font-family: 'Roboto Condensed', sans-serif; font-size: 0.74rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-soft); } .modal-takeaway { margin-top: 32px; padding: 20px 0; border-top: 1px solid var(--ink); border-bottom: 1px solid var(--rule); } .modal-takeaway .label { font-family: 'Roboto Condensed', sans-serif; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.12em; font-weight: 700; color: var(--economist-red); margin-bottom: 8px; } .modal-takeaway p { font-family: 'EB Garamond', serif; font-style: italic; font-size: 1.1rem; line-height: 1.5; color: var(--ink); } /* === INTERSECTIONS === */.intersections { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border-top: 1px solid var(--ink); border-bottom: 1px solid var(--ink); } .intersection { padding: 32px 28px; border-right: 1px solid var(--rule); position: relative; } .intersection:last-child { border-right: none; } .intersection::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--economist-red); transform: scaleX(0); transform-origin: left; transition: transform 0.4s ease; } .intersection:hover::before { transform: scaleX(1); } .intersection .num { font-family: 'Roboto Condensed', sans-serif; font-weight: 700; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--economist-red); margin-bottom: 14px; display: flex; align-items: center; gap: 10px; } .intersection h3 { font-family: 'EB Garamond', serif; font-size: 1.35rem; font-weight: 700; line-height: 1.18; letter-spacing: -0.012em; margin-bottom: 14px; color: var(--ink); } .intersection h3 em { font-style: italic; font-weight: 500; color: var(--economist-red); } .intersection p { color: var(--ink-soft); font-size: 0.98rem; line-height: 1.5; } /* === REMOTE === */.remote-spread { background: var(--ink); color: var(--paper-warm); margin: 0 -40px; padding: 64px 40px; border-top: 4px solid var(--economist-red); } .remote-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: minmax(260px, 0.9fr) minmax(360px, 1.2fr); gap: 48px; align-items: center; } .remote-spread .kicker { color: var(--economist-red); } .remote-spread .kicker::before { background: var(--economist-red); } .remote-spread h2 { font-family: 'EB Garamond', serif; font-size: clamp(2rem, 3.5vw, 3rem); font-weight: 700; line-height: 1; letter-spacing: -0.022em; color: var(--paper-warm); margin-bottom: 24px; } .remote-spread h2 em { font-style: italic; font-weight: 500; color: var(--economist-red); } .remote-spread p { color: rgba(245, 241, 232, 0.78); line-height: 1.6; font-size: 1.05rem; } .remote-spread p + p { margin-top: 14px; } .remote-photo { border-top: 1px solid rgba(245, 241, 232, 0.5); padding-top: 12px; } .remote-photo img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; object-position: 52% 48%; filter: grayscale(0.08) contrast(1.05); } .remote-photo figcaption { color: rgba(245, 241, 232, 0.58); } /* === PERSONAL === */.personal-spread { display: grid; grid-template-columns: minmax(220px, 0.55fr) minmax(300px, 1.05fr) minmax(280px, 0.9fr); gap: 38px; align-items: start; } .about-portrait img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; object-position: 50% 42%; } .personal-text { font-family: 'EB Garamond', serif; font-size: 1.32rem; line-height: 1.5; color: var(--ink); } .personal-text::first-letter { font-family: 'EB Garamond', serif; float: left; font-size: 4rem; line-height: 0.85; padding: 6px 10px 0 0; font-weight: 700; color: var(--economist-red); } .personal-text em { font-style: italic; font-weight: 500; } .pet-projects { display: flex; flex-direction: column; } .pet-projects-label { font-family: 'Roboto Condensed', sans-serif; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.12em; font-weight: 700; color: var(--economist-red); padding-bottom: 10px; border-bottom: 2px solid var(--ink); margin-bottom: 0; } .pet-card { padding: 18px 0; border-bottom: 1px solid var(--rule); cursor: pointer; display: flex; align-items: start; gap: 16px; transition: padding 0.25s; } .pet-card:hover { padding-left: 8px; } .pet-card:hover h4 { color: var(--economist-red); } .pet-card .pet-num { font-family: 'Roboto Condensed', sans-serif; font-size: 0.72rem; color: var(--ink-mute); font-weight: 700; letter-spacing: 0.06em; flex-shrink: 0; padding-top: 2px; } .pet-card h4 { font-family: 'EB Garamond', serif; font-size: 1.1rem; font-weight: 700; margin-bottom: 4px; line-height: 1.2; transition: color 0.2s; } .pet-card p { font-size: 0.92rem; color: var(--ink-soft); line-height: 1.4; } .pet-placeholder { font-family: 'Roboto Condensed', sans-serif; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-mute); margin-top: 6px; font-style: italic; } /* === CTA === */.cta-section { background: var(--paper-deep); margin: 0 -40px; padding: 64px 40px; border-top: 1px solid var(--ink); border-bottom: 1px solid var(--ink); } .cta-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr; gap: 1px; background: var(--ink); border: 1px solid var(--ink); } .cta-card { padding: 44px 40px; background: var(--paper); transition: background 0.25s; } .cta-card:hover { background: var(--paper-warm); } .cta-card .kicker { margin-bottom: 16px; } .cta-card h3 { font-family: 'EB Garamond', serif; font-size: 1.7rem; font-weight: 700; line-height: 1.15; letter-spacing: -0.018em; margin-bottom: 14px; } .cta-card h3 em { font-style: italic; font-weight: 500; color: var(--economist-red); } .cta-card p { color: var(--ink-soft); margin-bottom: 24px; font-size: 0.98rem; line-height: 1.55; } .cta-card.cta-secondary { padding: 28px 40px; background: var(--paper-deep); } .cta-card.cta-secondary:hover { background: var(--paper); } .cta-card.cta-secondary h3 { font-size: 1.25rem; margin-bottom: 8px; } .cta-card.cta-secondary p { margin-bottom: 16px; font-size: 0.94rem; } .cta-card.cta-secondary .kicker { margin-bottom: 10px; } .cta-links { display: flex; gap: 12px; flex-wrap: wrap; } .cta-link { display: inline-flex; align-items: center; gap: 8px; padding: 9px 18px; background: var(--ink); color: var(--paper-warm); text-decoration: none; font-family: 'Roboto Condensed', sans-serif; font-size: 0.84rem; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 500; transition: background 0.2s; } .cta-link:hover { background: var(--economist-red); } .cta-link svg { width: 14px; height: 14px; } /* === COLOPHON / FOOTER === */footer { padding: 32px 40px; text-align: center; border-top: 1px solid var(--rule); background: var(--paper); } .colophon { font-family: 'Roboto Condensed', sans-serif; font-size: 0.74rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink-mute); } .colophon strong { color: var(--ink); font-weight: 700; } .colophon .sep { margin: 0 12px; color: var(--rule); } /* === RESPONSIVE === */@media (max-width: 980px) { .container, .masthead-inner {  padding: 0 20px; }  .masthead {  padding: 12px 0; }  .masthead-meta {  display: none; }  .masthead-nav {  display: none; }  .frontpage {  padding: 18px 0 38px; }  .frontpage-grid {  grid-template-columns: 1fr;  gap: 26px; }  .frontpage-copy {  border-top: none;  padding-top: 0; }  .frontpage-visual {  order: -1; }  .frontpage-editorial {  grid-template-columns: 1fr;  gap: 24px; }  .figures-grid {  grid-template-columns: 1fr 1fr; }  .figures-label {  grid-column: 1 / -1;  border-right: none;  border-bottom: 1px solid var(--rule);  padding-bottom: 14px;  max-width: none; }  .intersections {  grid-template-columns: 1fr; }  .intersection {  border-right: none;  border-bottom: 1px solid var(--rule); }  .intersection:last-child {  border-bottom: none; }  .remote-spread {  margin: 0 -20px;  padding: 48px 20px; }  .remote-inner {  grid-template-columns: 1fr;  gap: 26px; }  .personal-spread {  grid-template-columns: 1fr;  gap: 36px; }  .cta-grid {  grid-template-columns: 1fr; }  .cta-section {  margin: 0 -20px;  padding: 48px 20px; }  .modal-inner {  padding: 48px 28px 60px; }  .modal-title {  font-size: 1.7rem; } } @media (min-width: 641px) and (max-width: 980px) { .frontpage-visual img {  aspect-ratio: 16 / 10;  object-position: 50% 0; }  .portrait-card img, .remote-photo img {  aspect-ratio: 16 / 10; } } @media (max-width: 640px) { body {  font-size: 16px; }  .container, .masthead-inner {  padding: 0 18px; }  .frontpage-headline {  font-size: clamp(2.05rem, 11vw, 3rem);  letter-spacing: -0.01em; }  .frontpage-headline.frontpage-subhead {  font-size: clamp(1.5rem, 7vw, 2rem); }  .frontpage-deck {  font-size: 1.04rem;  margin-bottom: 18px;  padding-bottom: 18px; }  .frontpage-summary {  font-size: 1rem; }  .status-tag {  font-size: 0.7rem;  letter-spacing: 0.06em;  line-height: 1.4; }  .hero-actions {  margin: 18px 0 18px; }  .hero-action {  flex: 1 1 132px;  justify-content: center;  padding-inline: 12px; }  .figures-band {  padding: 24px 0; }  .figure .num {  font-size: 2rem; }  .figure-context {  font-size: 0.82rem; }  .cta-card {  padding: 32px 22px; }  .cta-card.cta-secondary {  padding: 22px 22px; }  .cta-card h3 {  font-size: 1.4rem; }  .cta-card.cta-secondary h3 {  font-size: 1.15rem; }  section.article {  padding: 42px 0 36px; }  .section-marker {  margin-bottom: 22px; }  .section-deck {  margin-bottom: 28px; }  .legend {  gap: 16px;  flex-wrap: wrap;  margin-bottom: 18px; }  .roadmap-wrap {  overflow: visible;  margin: 0;  padding: 10px 0 0; }  .roadmap {  display: block;  min-width: 0;  padding: 0; }  .roadmap::before {  left: 6px;  right: auto;  top: 0;  bottom: 0;  width: 1px;  height: auto;  transform: none;  background: var(--rule-strong);  opacity: 0.35; }  .roadmap-marker {  padding: 0 0 18px 28px; }  .roadmap-marker-start .marker-label::after {  content: ''; }  .roadmap-marker-end {  padding: 18px 0 0 28px;  border-top: 1px solid var(--rule); }  .node {  display: block;  width: 100%;  min-width: 0;  min-height: 0;  padding: 15px 0 17px 28px;  border-bottom: 1px solid var(--rule); }  .node-dot {  left: 6px;  top: 26px;  width: 11px;  height: 11px; }  .node-content {  position: static;  width: auto;  transform: none;  padding: 0; }  .node[data-pos="odd"] .node-content, .node[data-pos="even"] .node-content {  top: auto;  bottom: auto; }  .node[data-pos="odd"] .node-content::before, .node[data-pos="even"] .node-content::before {  display: none; }  .node-title {  font-size: 1.18rem; }  .node-role {  font-size: 0.9rem; }  .remote-spread h2 {  font-size: clamp(1.85rem, 10vw, 2.6rem); }  .personal-text {  font-size: 1.18rem; }  .colophon {  display: flex;  flex-direction: column;  gap: 6px; }  .colophon .sep {  display: none; } } @media (prefers-reduced-motion: reduce) { html {  scroll-behavior: auto; }  *, *::before, *::after {  animation-duration: 0.01ms !important;  animation-iteration-count: 1 !important;  transition-duration: 0.01ms !important; } }</style>
+        <style>
+            .frontpage-headline em { color: var(--economist-red); }
+        </style>
+    </head>
+    <body>
+        <!-- MASTHEAD -->
+        <header class="masthead">
+            <div class="masthead-inner">
+                <a class="brand" href="#">Никита Тесленко</a>
+                <ul class="masthead-nav">
+                    <li>
+                        <a href="#path">The Path</a>
+                    </li>
+                    <li>
+                        <a href="#intersections">Intersections</a>
+                    </li>
+                    <li>
+                        <a href="#remote">Remote</a>
+                    </li>
+                    <li>
+                        <a href="#about">Personal</a>
+                    </li>
+                    <li>
+                        <a href="#contact">Contact</a>
+                    </li>
+                </ul>
             </div>
-          </aside>
+        </header>
+        <!-- FRONT PAGE -->
+        <div class="container">
+            <section class="frontpage" aria-labelledby="profile-title">
+                <div class="frontpage-grid">
+                    <figure class="frontpage-visual reveal">
+                        <img src="2-hero.jpg" width="880" height="1100" alt="Никита Тесленко в журнальной композиции с графиками и красным кругом" fetchpriority="high" decoding="async">
+                        <figcaption>16 лет запусков, розницы, операций и продукта</figcaption>
+                    </figure>
+                    <div class="frontpage-copy reveal delay-1">
+                        <h1 class="frontpage-headline" id="profile-title">
+          Запускаю рынки, команды и&nbsp;операционные <em>системы</em>. </h1>
+                        <p class="frontpage-deck">
+16 лет, четыре экономики, девять индустрий &#8212; от&nbsp;лотка кукурузы до&nbsp;цифровой клиники. Запускаю проекты руками, проверяю экономику цифрами, масштабирую системным подходом.<br></p>
+                        <p class="frontpage-deck"></p>
+                        <div class="hero-actions">
+                            <a class="hero-action" href="https://t.me/nigilist_view">Telegram</a>
+                            <a class="hero-action secondary" href="mailto:venik6000@gmail.com">Email</a>
+                        </div>
+                        <h2 class="frontpage-headline frontpage-subhead">
+          Один <em>взгляд&nbsp;сверху</em> на&nbsp;четыре экономики </h2>
+                        <p class="frontpage-deck frontpage-summary">
+          Россия: розница и&nbsp;HealthTech. Турция: премиальная недвижимость. Бразилия: производство. Европа: fashion и&nbsp;go-to-market. Когда захожу в&nbsp;новый проект, у&nbsp;меня уже есть с&nbsp;чем сравнить. Это не&nbsp;консультантский фреймворк, а&nbsp;насмотренность &#8212; она помогает увидеть проблему контрастно и&nbsp;принять решение быстрее. </p>
+                        <div class="frontpage-editorial pinegrow-ui-helper-relative">
+                            <p class="frontpage-lede">
+            Моя карьера двигалась маятником: корпорация &#8212; свой бизнес &#8212; снова корпорация. Это не&nbsp;разброс, а&nbsp;две школы. Корпорация дала масштаб, процесс и&nbsp;SLA. Предпринимательство &#8212; скорость, цену ошибки и&nbsp;прямую ответственность за&nbsp;P&amp;L. Поэтому я&nbsp;смотрю на&nbsp;запуск не&nbsp;как на&nbsp;презентацию, а&nbsp;как на&nbsp;систему: спрос, маржа, команда, ритм. </p>
+                            <aside class="frontpage-side" aria-label="Короткие факты">
+                                <ul>
+                                    <li>
+                                        <span class="country-tag">TR</span>
+                                        <strong>Maerton</strong> &middot; 500&nbsp;М&nbsp;&#8381; объёма продаж за&nbsp;4&nbsp;месяца с&nbsp;нуля
+                                    </li>
+                                    <li>
+                                        <span class="country-tag">RU</span>
+                                        <strong>HealthTech-сервис</strong> &middot; оцифровал 7&nbsp;процессов клиники, &#8722;60% ручной работы
+                                    </li>
+                                    <li>
+                                        <span class="country-tag">BR</span>
+                                        <strong>Производство мебели</strong> &middot; запуск с&nbsp;партнёром до&nbsp;product/market&nbsp;fit
+                                    </li>
+                                    <li>
+                                        <span class="country-tag">PL</span>Go-to-market для <strong>fashion-бренда</strong>
+                                    </li>
+                                </ul>
+                            </aside>
+                        </div>
+                    </div>
+                </div>
+            </section>
         </div>
-      </div>
-
-    </div>
-  </section>
-</div>
-
-<!-- KEY FIGURES BAND -->
-<section class="figures-band">
-  <div class="container">
-    <div class="figures-grid">
-      <div class="figures-label">By&nbsp;the<br>numbers</div>
-      <div class="figure">
-        <div class="num"><em>15</em>+</div>
-        <div class="desc">лет запусков<span class="figure-context">с&nbsp;2010&nbsp;года, без перерыва</span></div>
-      </div>
-      <div class="figure">
-        <div class="num"><em>4</em></div>
-        <div class="desc">страны<span class="figure-context">RU&nbsp;· PL&nbsp;· TR&nbsp;· BR</span></div>
-      </div>
-      <div class="figure">
-        <div class="num"><em>40</em>+</div>
-        <div class="desc">магазинов за&nbsp;год<span class="figure-context">TTM&nbsp;−5&nbsp;дней против норматива</span></div>
-      </div>
-      <div class="figure">
-        <div class="num"><em>500</em>М&nbsp;₽</div>
-        <div class="desc">GMV за&nbsp;4&nbsp;мес. с&nbsp;нуля<span class="figure-context">премиум-недвижимость, Турция</span></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- INTERSECTIONS -->
-<div class="container">
-  <section class="article" id="intersections">
-    <div class="section-marker">
-      <span class="number">01 — Intersections</span>
-      <span class="rule"></span>
-    </div>
-    <h2 class="section-title">Где сходятся <em>две школы</em></h2>
-    <p class="section-deck">
-      Три перехода, которые большинство менеджеров не делают за всю карьеру.
-    </p>
-
-    <div class="intersections">
-      <div class="intersection">
-        <div class="num"><span>—</span> 01</div>
-        <h3>Три страны <em>изнутри</em></h3>
-        <p>Не&nbsp;туризм и&nbsp;не&nbsp;релокация. Запускал и&nbsp;управлял в&nbsp;каждой. Получил гражданство Бразилии. Одни и&nbsp;те&nbsp;же бизнес-механики работают в&nbsp;каждой стране по-разному — я&nbsp;знаю, где именно их&nbsp;нужно перенастраивать.</p>
-      </div>
-      <div class="intersection">
-        <div class="num"><span>—</span> 02</div>
-        <h3>Школа предпринимателя × <em>школа корпорации</em></h3>
-        <p>Считал маржу с&nbsp;одной кукурузы — и&nbsp;руководил командами 200+&nbsp;человек в&nbsp;международной корпорации. Большинство людей попадают только в&nbsp;один из&nbsp;этих миров.</p>
-      </div>
-      <div class="intersection">
-        <div class="num"><span>—</span> 03</div>
-        <h3>Запуск + масштабирование + <em>advisory</em></h3>
-        <p>Открывал руками, масштабировал процессами, теперь консультирую других. Один и&nbsp;тот&nbsp;же кейс из&nbsp;трёх ракурсов даёт три разных ответа — обычно мне нужны все три.</p>
-      </div>
-    </div>
-  </section>
-</div>
-
-<!-- OPERATING RECORD BAND -->
-<section class="figures-band">
-  <div class="container">
-    <div class="figures-grid">
-      <div class="figures-label">Operating<br>record</div>
-      <div class="figure">
-        <div class="num"><em>+40</em>%</div>
-        <div class="desc">LFL за&nbsp;год<span class="figure-context">Nespresso · премиум-FMCG</span></div>
-      </div>
-      <div class="figure">
-        <div class="num"><em>2,1</em>%</div>
-        <div class="desc">Lead-to-Customer CR<span class="figure-context">Maerton · премиум, длинный цикл</span></div>
-      </div>
-      <div class="figure">
-        <div class="num"><em>7,7</em>×</div>
-        <div class="desc">Marketing ROI<span class="figure-context">Maerton · go-to-market с&nbsp;нуля</span></div>
-      </div>
-      <div class="figure">
-        <div class="num"><em>90→10</em>%</div>
-        <div class="desc">Turnover Rate<span class="figure-context">Nespresso · команда за&nbsp;год</span></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- THE PATH / ROADMAP -->
-<div class="container">
-  <section class="article" id="path">
-    <div class="section-marker">
-      <span class="number">02 — The Path</span>
-      <span class="rule"></span>
-    </div>
-    <h2 class="section-title">Что я <em>делал</em></h2>
-    <p class="section-deck">
-      Хронология карьеры, которая чередует свои бизнесы и&nbsp;корпоративные роли. Каждый узел открывает подробности — нажмите на&nbsp;точку, чтобы прочитать.
-    </p>
-
-    <div class="legend">
-      <div class="legend-item"><span class="swatch entr"></span> Свой бизнес</div>
-      <div class="legend-item"><span class="swatch corp"></span> Корпоративная роль</div>
-    </div>
-
-    <div class="roadmap-wrap">
-      <div class="roadmap" id="roadmap">
-        <div class="roadmap-marker roadmap-marker-start">
-          <div class="marker-label">Сейчас</div>
-        </div>
-        <div class="roadmap-marker roadmap-marker-end">
-          <div class="marker-label">2010</div>
-          <div class="marker-sub">начало</div>
-        </div>
-      </div>
-    </div>
-  </section>
-</div>
-
-<!-- REMOTE -->
-<div class="container">
-  <section class="article article-remote" id="remote">
-    <div class="remote-spread">
-      <div class="remote-inner">
-        <figure class="remote-photo reveal">
-          <img src="3-remote.jpg" width="881" height="1100" alt="Никита Тесленко во Флорианополисе на фоне Бразилии и графических элементов" decoding="async">
-          <figcaption><span>Florianópolis</span>удалённая база для международных проектов</figcaption>
-        </figure>
-        <div>
-          <div class="kicker">03 — Remote</div>
-          <h2>Работаю <em>удалённо</em>.<br>Базируюсь во&nbsp;Флорианополисе.</h2>
-          <p>Удалённый формат — основной с&nbsp;2022&nbsp;года. Сейчас — сервис персонального сопровождения по&nbsp;здоровью (команда в&nbsp;Москве), из&nbsp;Флорианополиса. До&nbsp;этого — Турция, Польша, Бразилия.</p>
-          <p>Шесть часов разницы с&nbsp;Москвой — не&nbsp;помеха, а&nbsp;смещённая утренняя смена: два часа на&nbsp;стратегию до&nbsp;того, как команда подключится.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-</div>
-
-<!-- PERSONAL -->
-<div class="container">
-  <section class="article" id="about">
-    <div class="section-marker">
-      <span class="number">04 — Personal</span>
-      <span class="rule"></span>
-    </div>
-    <h2 class="section-title">Кто я <em>помимо работы</em></h2>
-    <p class="section-deck">В работе моя задача&nbsp;— собирать систему из&nbsp;хаоса. В&nbsp;личное время мне важно её&nbsp;обратно разобрать.</p>
-
-    <div class="personal-spread">
-      <figure class="portrait-card about-portrait">
-        <img src="1-portrait.jpg" width="720" height="900" alt="Портрет Никиты Тесленко" decoding="async">
-        <figcaption><span>Portrait</span>официальный профиль для быстрых решений</figcaption>
-      </figure>
-      <div>
-        <p class="personal-text">
-          В&nbsp;нерабочее время я&nbsp;возвращаюсь к&nbsp;вещам, которые ничего не&nbsp;«делают». Гитара. Генеративные пайплайны в&nbsp;ComfyUI. Видео в&nbsp;духе Линча. <em>Sapiens</em> Харари перечитываю раз в&nbsp;пару лет — каждый раз подчёркиваю другое. Недавно пересматривал <em>«Человека на&nbsp;Луне»</em> Шазелла и&nbsp;думал про&nbsp;то, что у&nbsp;NASA в&nbsp;1960-х не&nbsp;было ни&nbsp;юнит-экономики, ни&nbsp;roadmap'а — и&nbsp;они всё равно дошли.
-        </p>
-      </div>
-      <div>
-        <div class="pet-projects-label">Pet projects</div>
-        <div class="pet-projects">
-          <div class="pet-card">
-            <div class="pet-num">№1</div>
-            <div>
-              <h4>Laravel SAAS на&nbsp;Claude Code</h4>
-              <p>Мультиагентная архитектура для автоматизации</p>
-              <div class="pet-placeholder">Скриншоты будут позже</div>
+        <!-- KEY FIGURES BAND -->
+        <section class="figures-band">
+            <div class="container">
+                <div class="figures-grid">
+                    <div class="figures-label">By&nbsp;the<br>numbers
+                    </div>
+                    <div class="figure">
+                        <div class="num">
+                            <em>16</em>+
+                        </div>
+                        <div class="desc">лет запусков<span class="figure-context">с&nbsp;2010&nbsp;года, без перерыва</span>
+                        </div>
+                    </div>
+                    <div class="figure">
+                        <div class="num">
+                            <em>4</em>
+                        </div>
+                        <div class="desc">экономики<span class="figure-context">RU&nbsp;· TR&nbsp;· BR&nbsp;· EU</span>
+                        </div>
+                    </div>
+                    <div class="figure">
+                        <div class="num">
+                            <em>40</em>+
+                        </div>
+                        <div class="desc">магазинов за&nbsp;год<span class="figure-context">time-to-open 14&rarr;7&nbsp;дней</span>
+                        </div>
+                    </div>
+                    <div class="figure">
+                        <div class="num">
+                            <em>500</em>М&nbsp;₽
+                        </div>
+                        <div class="desc">объём продаж за&nbsp;4&nbsp;мес.<span class="figure-context">премиум-недвижимость, Турция</span>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
-          <div class="pet-card">
-            <div class="pet-num">№2</div>
-            <div>
-              <h4>Генеративные пайплайны в&nbsp;ComfyUI</h4>
-              <p>AI-фотография и&nbsp;видео-анимация</p>
-              <div class="pet-placeholder">Скриншоты будут позже</div>
+        </section>
+        <!-- INTERSECTIONS -->
+        <div class="container">
+            <section class="article" id="intersections">
+                <div class="section-marker">
+                    <span class="number">01 — Intersections</span>
+                    <span class="rule"></span>
+                </div>
+                <h2 class="section-title">Где опыт наконец сложился в <em>систему</em></h2>
+                <p class="section-deck">
+      Три пересечения опыта, которые объясняют мой способ работать: разные экономики, две управленческие школы и&nbsp;три стадии бизнеса. </p>
+                <div class="intersections">
+                    <div class="intersection">
+                        <div class="num">
+                            <span>—</span> 01
+                        </div>
+                        <h3>Четыре экономики <em>изнутри</em></h3>
+                        <p>Это не&nbsp;туризм и&nbsp;не&nbsp;красивая релокационная история. Я&nbsp;запускал и&nbsp;управлял проектами в&nbsp;России, Турции, Бразилии и&nbsp;Европе. Получил гражданство Бразилии. Примечательно, что одни и&nbsp;те&nbsp;же бизнес-механики везде ведут себя по-разному и&nbsp;я&nbsp;уже знаю, где именно их&nbsp;приходится подкручивать.</p>
+                    </div>
+                    <div class="intersection">
+                        <div class="num">
+                            <span>—</span> 02
+                        </div>
+                        <h3>Школа предпринимателя × <em>школа корпорации</em></h3>
+                        <p>Считал маржу с&nbsp;одной кукурузы и&nbsp;руководил командами 200+&nbsp;человек в&nbsp;международной корпорации. Большинство людей попадают только в&nbsp;один из&nbsp;этих миров.</p>
+                    </div>
+                    <div class="intersection">
+                        <div class="num">
+                            <span>—</span> 03
+                        </div>
+                        <h3>Запуск + масштабирование + <em>advisory</em></h3>
+                        <p>Открывал руками, масштабировал процессами, теперь консультирую молодых предпринимателей. Один и&nbsp;тот&nbsp;же кейс, если смотреть на&nbsp;него с&nbsp;трёх сторон, даёт три разных ответа. И, что немаловажно, обычно мне нужны все три.</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+        <!-- OPERATING RECORD BAND -->
+        <section class="figures-band">
+            <div class="container">
+                <div class="figures-grid">
+                    <div class="figures-label">Operating<br>record
+                    </div>
+                    <div class="figure">
+                        <div class="num">
+                            <em>+40</em>%
+                        </div>
+                        <div class="desc">LFL за&nbsp;год<span class="figure-context">Nespresso · премиум-FMCG</span>
+                        </div>
+                    </div>
+                    <div class="figure">
+                        <div class="num">
+                            <em>2,1</em>%
+                        </div>
+                        <div class="desc">Lead-to-Customer CR<span class="figure-context">Maerton · премиум, длинный цикл</span>
+                        </div>
+                    </div>
+                    <div class="figure">
+                        <div class="num">
+                            <em>7,7</em>×
+                        </div>
+                        <div class="desc">ROMI<span class="figure-context">Maerton · go-to-market с&nbsp;нуля</span>
+                        </div>
+                    </div>
+                    <div class="figure">
+                        <div class="num">
+                            <em>90→10</em>%
+                        </div>
+                        <div class="desc">Turnover Rate<span class="figure-context">LPP SA &middot; команды открытий</span>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
-          <div class="pet-card">
-            <div class="pet-num">№3</div>
-            <div>
-              <h4>Lynch-style видеопроекты</h4>
-              <p>Авторские сценарии и&nbsp;визуальный язык</p>
-              <div class="pet-placeholder">Скриншоты будут позже</div>
+        </section>
+        <!-- THE PATH / ROADMAP -->
+        <div class="container">
+            <section class="article" id="path">
+                <div class="section-marker">
+                    <span class="number">02 — The Path</span>
+                    <span class="rule"></span>
+                </div>
+                <h2 class="section-title">Что я <em>делал</em></h2>
+                <p class="section-deck">
+      Хронология карьеры, которая чередует свои бизнесы и&nbsp;корпоративные роли. Каждый узел открывает подробности — нажмите на&nbsp;точку, чтобы прочитать. </p>
+                <div class="legend">
+                    <div class="legend-item">
+                        <span class="swatch entr"></span> Свой бизнес
+                    </div>
+                    <div class="legend-item">
+                        <span class="swatch corp"></span> Корпоративная роль
+                    </div>
+                </div>
+                <div class="roadmap-wrap">
+                    <div class="roadmap" id="roadmap">
+                        <div class="roadmap-marker roadmap-marker-start">
+                            <div class="marker-label">Сейчас</div>
+                        </div>
+                        <div class="roadmap-marker roadmap-marker-end">
+                            <div class="marker-label">2010</div>
+                            <div class="marker-sub">начало</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+        <!-- REMOTE -->
+        <div class="container">
+            <section class="article article-remote" id="remote">
+                <div class="remote-spread">
+                    <div class="remote-inner">
+                        <figure class="remote-photo reveal">
+                            <img src="3-remote.jpg" width="881" height="1100" alt="Никита Тесленко во Флорианополисе на фоне Бразилии и графических элементов" decoding="async">
+                            <figcaption>Флорианополис — удалённая база для международных проектов</figcaption>
+                        </figure>
+                        <div>
+                            <div class="kicker">03 — Remote</div>
+                            <h2>Работаю <em>удалённо</em>.<br>Базируюсь во&nbsp;Флорианополисе.</h2>
+                            <p>Удалённый формат &#8212; основной с&nbsp;2022&nbsp;года. Сейчас веду сервис персонального сопровождения по&nbsp;здоровью из&nbsp;Флорианополиса, команда в&nbsp;Москве. До&nbsp;этого были Турция, Европа.</p>
+                            <p>Шесть часов разницы с&nbsp;Москвой это скрытое преимущество. Когда Москва заканчивает день, у&nbsp;меня ещё рабочее время: несколько спокойных часов, чтобы разобрать цифры, принять решения и&nbsp;подготовить команде следующий ход. Хороший процесс не&nbsp;требует постоянного присутствия. Ему нужен ритм.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+        <!-- PERSONAL -->
+        <div class="container">
+            <section class="article" id="about">
+                <div class="section-marker">
+                    <span class="number">04 — Personal</span>
+                    <span class="rule"></span>
+                </div>
+                <h2 class="section-title">Кто я <em>помимо работы</em></h2>
+                <p class="section-deck">В работе моя задача&nbsp;— собирать систему из&nbsp;хаоса. В&nbsp;личное время мне важно её&nbsp;обратно разобрать.</p>
+                <div class="personal-spread">
+                    <figure class="portrait-card about-portrait">
+                        <img src="1-portrait.jpg" width="720" height="900" alt="Портрет Никиты Тесленко" decoding="async">
+                        <figcaption>Официальный портрет — для быстрых решений</figcaption>
+                    </figure>
+                    <div>
+                        <p class="personal-text">
+          В&nbsp;нерабочее время я&nbsp;возвращаюсь к&nbsp;вещам, которые ничего не&nbsp;&laquo;делают&raquo;. Шахматы, гитара. <em>&laquo;Sapiens&raquo;</em> Юваля Ноя Харари перечитываю раз в&nbsp;пару лет и&nbsp;каждый раз подчёркиваю что-то новое. Недавно пересматривал фильм <em>&laquo;Человек на&nbsp;Луне&raquo;</em> про&nbsp;Энди Кауфмана и&nbsp;подумал: со&nbsp;стороны чужая логика часто выглядит как хаос. Но&nbsp;если смотреть внимательнее, возможно, всё собрано куда точнее, чем кажется. </p>
+                    </div>
+                    <div>
+                        <div class="pet-projects-label">Pet projects</div>
+                        <div class="pet-projects">
+                            <div class="pet-card">
+                                <div class="pet-num">№1</div>
+                                <div>
+                                    <h4>Веб-платформа на&nbsp;Claude Code</h4>
+                                    <p>Веб-приложение для ведения карт клиентов 2Life.</p>
+                                    <div class="pet-placeholder">Скриншоты будут позже</div>
+                                </div>
+                            </div>
+                            <div class="pet-card">
+                                <div class="pet-num">№2</div>
+                                <div>
+                                    <h4>Генеративные пайплайны в&nbsp;ComfyUI</h4>
+                                    <p>AI-фотография и&nbsp;видео-анимация</p>
+                                    <div class="pet-placeholder">Скриншоты будут позже</div>
+                                </div>
+                            </div>
+                            <div class="pet-card">
+                                <div class="pet-num">№3</div>
+                                <div>
+                                    <h4>ИИ-аудитория</h4>
+                                    <p>Проведение опросов для маркетинга с&nbsp;помощью ИИ</p>
+                                    <div class="pet-placeholder">Скриншоты будут позже</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+        <!-- CTA -->
+        <div class="container">
+            <section class="contact-section" id="contact">
+                <div class="cta-section">
+                    <div class="cta-grid">
+                        <div class="cta-card">
+                            <div class="kicker">Основной формат</div>
+                            <h3>Запуск, перезапуск и&nbsp;<em>операционная пересборка</em></h3>
+                            <p>Захожу туда, где нужно собрать систему из&nbsp;хаоса — на&nbsp;новом рынке, после M&amp;A или смены модели. Международный контекст, удалённо.</p>
+                            <div class="cta-links">
+                                <a class="cta-link" href="https://t.me/nigilist_view"> <svg viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z"/>
+                                    </svg>
+              Telegram </a>
+                                <a class="cta-link" href="mailto:venik6000@gmail.com"> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <rect x="3" y="5" width="18" height="14" rx="2"/>
+                                        <path d="M3 7l9 6 9-6"/>
+                                    </svg>
+              Email </a>
+                            </div>
+                        </div>
+                        <div class="cta-card cta-secondary">
+                            <div class="kicker">Адвайзинг — параллельно</div>
+                            <h3>Беру 1–2 проекта одновременно</h3>
+                            <p>Помогаю молодым предпринимателям посмотреть на&nbsp;бизнес системно. Говорю, как надо делать, и&nbsp;иногда &#8212; как не&nbsp;надо. Из&nbsp;того, чем могу публично поделиться: </p>
+                            <p>1. $500&nbsp;&rarr; $5000 личного дохода за&nbsp;3&nbsp;месяца. </p>
+                            <p>2. $5000 сэкономили, отказавшись от&nbsp;нерелевантной стратегии и&nbsp;баера без опыта польского рынка.&nbsp;</p>
+                            <p>3.&nbsp;Pivot проекта, переупаковка и выход на окупаемость и прибыль. </p>
+                            <div class="cta-links">
+                                <a class="cta-link" href="https://t.me/nigilist_view"> <svg viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z"/>
+                                    </svg>
+              Написать </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+        <footer>
+            <div class="colophon">
+                <strong>Тесленко &middot; NT</strong>
+                <span class="sep">&middot;</span>&nbsp;<span class="sep">&middot;</span>
+                Florianópolis &rarr; Worldwide
+                <span class="sep">&middot;</span>
+                Russian (Native) &middot; English (B2) &middot; Português (A2)
+                <span class="sep">&middot;</span>
+                &copy; 2026
             </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-</div>
-
-<!-- CTA -->
-<div class="container">
-  <section class="contact-section" id="contact">
-    <div class="cta-section">
-      <div class="cta-grid">
-        <div class="cta-card">
-          <div class="kicker">Основной формат</div>
-          <h3>Запуск, перезапуск, <em>операционная перестройка</em></h3>
-          <p>Захожу туда, где нужно собрать систему из&nbsp;хаоса — на&nbsp;новом рынке, после M&amp;A или смены модели. Международный контекст, удалённо.</p>
-          <div class="cta-links">
-            <a class="cta-link" href="https://t.me/nigilist_view">
-              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z"/></svg>
-              Telegram
-            </a>
-            <a class="cta-link" href="mailto:venik6000@gmail.com">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
-              Email
-            </a>
-          </div>
-        </div>
-        <div class="cta-card cta-secondary">
-          <div class="kicker">Адвайзинг — параллельно</div>
-          <h3>Беру 1–2 проекта одновременно</h3>
-          <p>Помогаю молодым предпринимателям с&nbsp;системным взглядом на&nbsp;бизнес. Из&nbsp;того, чем могу публично поделиться: ₽20к&nbsp;→ ₽200к месячной выручки, $500&nbsp;→ $5000 личного дохода, $8000 сэкономленных за&nbsp;один звонок.</p>
-          <div class="cta-links">
-            <a class="cta-link" href="https://t.me/nigilist_view">
-              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z"/></svg>
-              Написать
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-</div>
-
-<footer>
-  <div class="colophon">
-    <strong>Тесленко · NT</strong>
-    <span class="sep">·</span>
-    Volume I, Issue 01
-    <span class="sep">·</span>
-    Florianópolis → Worldwide
-    <span class="sep">·</span>
-    Russian (Native) · English (B2) · Português (A2)
-    <span class="sep">·</span>
-    © 2026
-  </div>
-</footer>
-
-<!-- MODAL -->
-<div class="modal-backdrop" id="backdrop"></div>
-<aside class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-hidden="true">
-  <button class="modal-close" id="modalClose" type="button" aria-label="Закрыть">✕</button>
-  <div class="modal-inner" id="modalInner"></div>
-</aside>
-
-<script>
+        </footer>
+        <!-- MODAL -->
+        <div class="modal-backdrop" id="backdrop"></div>
+        <aside class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-hidden="true">
+            <button class="modal-close" id="modalClose" type="button" aria-label="Закрыть">✕</button>
+            <div class="modal-inner" id="modalInner"></div>
+        </aside>
+        <script>
 const nodes = [
   {
     type: 'entr',
@@ -1639,13 +412,15 @@ const nodes = [
     title: 'LPP SA',
     role: 'Директор магазина → координатор по открытию',
     tag: 'Корпоративная роль · Экспансия',
-    headline: 'Открыл 40+ магазинов за один год — от Белгорода до Хабаровска.',
-    body: '<p>Магазины 1000–2500&nbsp;м². В пике — четыре открытия параллельно в разных городах и странах, удалённо. Иногда с нехваткой штата 50%, иногда в недостроенных помещениях. <strong>Сроки соблюдены в 100% случаев.</strong></p><p>Команды по 50–60 человек на открытие, 200+ суммарно в подчинении на пике. Отвечал за всю цепочку: помещение, ремонт, найм, обучение, открытие.</p>',
+    headline: 'Открыл 40+ магазинов за год, соблюдал сроки в 100% случаев и сократил time-to-open с 14 до 7 дней.',
+    body: '<p>Магазины 1000–2500&nbsp;м². В пике — до четырёх параллельных открытий в разных городах и странах, удалённо. Иногда с нехваткой штата до 50%, иногда в недостроенных помещениях. <strong>Сроки соблюдены в 100% случаев.</strong></p><p>Команды по 50–60 человек на открытие, 200+ суммарно в подчинении на пике. Стабилизировал команды открытий: Turnover Rate снизился с 90% до 10%. Отвечал за всю цепочку: помещение, ремонт, найм, обучение, открытие.</p>',
     stats: [
       { v: '40+', l: 'магазинов за год' },
-      { v: '120+', l: 'обученных сотрудников' },
-      { v: '+15%', l: 'продуктивность открытия' },
-      { v: '5 дней', l: 'сокращённый TTM' }
+      { v: '100%', l: 'открытий в срок' },
+      { v: '14→7 дней', l: 'time-to-open' },
+      { v: 'до 4', l: 'открытия одновременно' },
+      { v: '200+', l: 'человек в пике' },
+      { v: '90→10%', l: 'Turnover Rate' }
     ],
     takeaway: 'Работать в хаосе и всё равно запускать в срок. Этот навык потом сработал везде.'
   },
@@ -1655,15 +430,15 @@ const nodes = [
     title: 'Nestle (Nespresso)',
     role: 'Руководитель проектов',
     tag: 'Корпоративная роль · FMCG',
-    headline: 'Снизил Turnover Rate команды с 90% до 10% и вырастил LFL на 40%.',
-    body: '<p>Запуск линейки Nespresso Vertuo. Перестройка склада: доставка +25%, NPS +5. Команда 10+ человек.</p><p>Через 3 месяца получил оффер на повышение, но проект закрылся в РФ из-за войны.</p>',
+    headline: 'Вырастил LFL на 40% и улучшил операционные метрики запуска Nespresso Vertuo.',
+    body: '<p>Запуск линейки Nespresso Vertuo. Перестройка склада: доставка +25%, NPS +5. Команда 10+ человек.</p><p>Через 3 месяца получил оффер на повышение, но затем компания приняла решение уйти из РФ.</p>',
     stats: [
       { v: '+40%', l: 'LFL за год' },
-      { v: '90→10%', l: 'Turnover Rate' },
       { v: '>95%', l: 'SLA' },
-      { v: '+25%', l: 'скорость доставки' }
+      { v: '+25%', l: 'скорость доставки' },
+      { v: '+5 п.п.', l: 'NPS' }
     ],
-    takeaway: 'Цифры команды — это всегда прокси к качеству процессов. Лечится не людьми, а системой.'
+    takeaway: 'Операционный рост появляется там, где команда видит не только продажи, но и весь путь клиента после покупки.'
   },
   {
     type: 'entr',
@@ -1671,12 +446,16 @@ const nodes = [
     title: 'Maerton',
     role: 'Запуск премиальной недвижимости в Турции',
     tag: 'Свой бизнес · С нуля до 500М ₽',
-    headline: 'С нуля до 500&nbsp;М₽ оборота за 4 месяца. Полная go-to-market стратегия и команда 30+ человек.',
-    body: '<p>Запускал бизнес премиальной недвижимости в Турции с партнёрами. Нанял и обучил 30+ человек, протестировал 300+ гипотез, запустил 11 каналов привлечения.</p><p>Проект закрыт из-за политической обстановки в Турции — но юнит-экономика и команда работали.</p>',
+    headline: 'С нуля до 500&nbsp;М₽ объёма продаж за 4 месяца. ROMI 7,7×, средний чек 534 тыс. евро.',
+    body: '<p>Запускал бизнес премиальной недвижимости в Турции с партнёрами. Нанял и обучил 30+ человек, протестировал 300+ гипотез, запустил 8 каналов привлечения.</p><p>На старте удерживали CPL около 2500&nbsp;₽ и CAC около 87&nbsp;000&nbsp;₽; по мере масштабирования CAC вырос до 200–250&nbsp;тыс.&nbsp;₽. Средний чек — 534&nbsp;тыс.&nbsp;евро, средняя комиссия — 10–15% от стоимости объекта.</p><p>Проект закрыт из-за политической обстановки в Турции — но юнит-экономика и команда работали.</p>',
     stats: [
-      { v: '500М ₽', l: 'оборот за 4 мес.' },
-      { v: '7.7×', l: 'ROI маркетинга' },
-      { v: '2.1%', l: 'Lead-to-Customer CR' },
+      { v: '500М ₽', l: 'объём продаж за 4 мес.' },
+      { v: '7,7×', l: 'ROMI' },
+      { v: '2,1%', l: 'Lead-to-Customer CR' },
+      { v: '2500 ₽', l: 'CPL' },
+      { v: '87 тыс. ₽', l: 'минимальный CAC' },
+      { v: '534 тыс. €', l: 'средний чек' },
+      { v: '10–15%', l: 'средняя комиссия' },
       { v: '300+', l: 'гипотез протестировано' }
     ],
     takeaway: 'В стартапе побеждает не идея, а скорость гипотез. Корпоративный опыт не мешает предпринимательству, если уметь снять с себя «корпоративные тормоза».'
@@ -1698,7 +477,7 @@ const nodes = [
     role: 'Руководитель продукта',
     tag: 'Корпоративная роль · HealthTech',
     headline: 'Цифровизация клиники с нуля. −60% ручного труда, операции до &times;5 быстрее.',
-    body: '<p>Оцифровал 7 ключевых бизнес-процессов клиники. Внедрил CRM YouGile, запустил школу онбординга 2Life School (адаптация с 30 до 7 дней), построил систему KPI-дашбордов с AI-инструментами.</p><p>Работаю удалённо из Бразилии с командой в Москве.</p>',
+    body: '<p>Кейс не про performance-маркетинг, а про операционную пропускную способность клиники. Оцифровал 7 ключевых бизнес-процессов, внедрил CRM YouGile, запустил школу онбординга 2Life School (адаптация с 30 до 7 дней), построил систему KPI-дашбордов с AI-инструментами.</p><p>Работаю удалённо из Бразилии с командой в Москве.</p>',
     stats: [
       { v: '−60%', l: 'ручной работы' },
       { v: '×5', l: 'скорость операций' },
@@ -1714,7 +493,11 @@ const nodes = [
     role: 'Helicopter View как услуга',
     tag: 'Свой бизнес · Параллельно',
     headline: 'Консультирую начинающих предпринимателей. Помогаю увидеть слепые зоны и системные проблемы.',
-    body: '<p>Кейсы, которые могу публично назвать:</p><p>— Помог запустить fashion-бренд в Польше.<br>— Перевёл производителя натурального мыла и кремов из маркетплейсов в B2B. Сейчас его продукция продаётся в ресторанах Новикова и Пинского.</p>',
+    body: '<p>Кейсы, которые могу публично назвать:</p><p>— Помог запустить fashion-бренд в Польше: личный доход вырос с $500 до $5000 за 3 месяца.<br>— Сэкономил команде $5000, отговорив от маркетинговой стратегии и баера без релевантного опыта польского рынка для подбора 15–20 SKU.<br>— Перевёл производителя натурального мыла и кремов из маркетплейсов в B2B. Сейчас его продукция продаётся в ресторанах Новикова и Пинского.</p>',
+    stats: [
+      { v: '$500→$5000', l: 'личный доход за 3 мес.' },
+      { v: '$5000', l: 'сэкономлено на нерелевантных подрядчиках' }
+    ],
     takeaway: 'Большинство проблем у молодых предпринимателей — это не нехватка денег, а нехватка взгляда сверху.'
   }
 ];
@@ -1795,6 +578,5 @@ modalClose.addEventListener('click', closeModal);
 backdrop.addEventListener('click', closeModal);
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 </script>
-
-</body>
+    </body>
 </html>
